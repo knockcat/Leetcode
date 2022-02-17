@@ -3,29 +3,20 @@
 class Solution
 {
 public:
-    vector<int> minOperations(string boxes)
+    int minCostToMoveChips(vector<int> &position)
     {
-        int n = boxes.length();
-        vector<int> v(n);
-
-        int step = 0, cnt = 0;
-
-        for (int i = n - 1; i >= 0; --i)
-        {
-            v[i] = step;
-            if (boxes[i] == '1')
-                ++cnt;
-            step += cnt;
-        }
-
-        step = 0, cnt = 0;
+        int n = position.size();
+        int even = 0;
+        int odd = 0;
         for (int i = 0; i < n; ++i)
         {
-            v[i] += step;
-            if (boxes[i] == '1')
-                ++cnt;
-            step += cnt;
+            if (position[i] % 2 == 0)
+                even++;
+            else
+            {
+                odd++;
+            }
         }
-        return v;
+        return min(even, odd);
     }
 };
