@@ -22,7 +22,8 @@ public:
                 ++res;
 
             // updating x1 & x2 with next intervals
-            as we are comparing from upcoming ones.if (intervals[i][1] > x2)
+            // as we are comparing from upcoming ones.
+            if (intervals[i][1] > x2)
             {
                 x1 = intervals[i][0];
                 x2 = intervals[i][1];
