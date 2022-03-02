@@ -1,6 +1,6 @@
-392. Is Subsequence
+// 392.✅ Is Subsequence
 
-    class Solution
+class Solution
 {
 public:
     int k = 0;
