@@ -4,10 +4,11 @@ public:
         int n = nums.size();
         int ans = 0;
         
-        vector<unordered_map<long long,int>> dp(n);
-        for(int i = 1; i<n; ++i)
+        vector<unordered_map<long long, int>> dp(n);
+        
+        for(int i = 1; i < n; ++i)
         {
-            for(int j = 0; j<i; ++j)
+            for(int j = 0; j < i; ++j)
             {
                 long long cd = (long long) nums[i] - nums[j];
                 int count = dp[j].count(cd) ? dp[j][cd] : 0;
@@ -15,9 +16,6 @@ public:
                 ans += count;
             }
         }
-        
         return ans;
     }
 };
-
-
