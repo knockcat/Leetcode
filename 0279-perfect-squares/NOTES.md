@@ -1,9 +1,3 @@
-dp[0] = 0;
-for(int i = 1; i<=n; ++i)
-{
-dp[i] = i;
-for(int j = 1; j*j <= i; ++j)
-{
 int sq = j*j;
 dp[i] = min(dp[i], 1 + dp[i-sq]);
 }
@@ -11,9 +5,9 @@ dp[i] = min(dp[i], 1 + dp[i-sq]);
 return dp[n];
 }
 };
-```
 ​
-**Legendres's Theorem**
+Legendres's Theorem
+​
 class Solution {
 public:
 int numSquares(int n) {
@@ -31,3 +25,4 @@ return 2;
 return 3;
 }
 };
+```
