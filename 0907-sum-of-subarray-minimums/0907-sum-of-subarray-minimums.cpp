@@ -43,3 +43,61 @@ public:
         return ans;
     }
 };
+
+/*
+    O(n^2)
+    class Solution {
+    public:
+        int sumSubarrayMins(vector<int>& arr) {
+
+            int n = arr.size();
+            long long ans = 0;
+            int mod = 1e9 + 7;
+
+
+            for(int i = 0; i < n; ++i)
+            {
+                int mini = INT_MAX;
+                for(int j = i; j < n; ++j){
+                    if(arr[j] < mini)
+                    {
+                        mini = arr[j];
+                        ans += arr[j];
+                        ans %= mod;
+                    }
+                    else
+                    {
+                        ans += mini;
+                        ans %= mod;
+                    }
+                }
+            }
+            return ans%mod;
+        }
+};
+
+*/
+
+/*
+    O(n^3)
+    
+    class Solution {
+    public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int sum =0 ,n = arr.size();
+        for(int i=0;i<n;++i)
+            {
+            for(int j=i;j<n;++j) 
+                {
+                int mini = INT_MAX;
+                for(int k =i;k<=j;++k) 
+                    {
+                    mini = min(arr[k], mini) ;
+                }
+                sum += mini;
+            }
+        }
+        return sum;
+    }
+};
+*/
