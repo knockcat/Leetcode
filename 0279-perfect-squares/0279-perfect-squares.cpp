@@ -2,19 +2,22 @@ class Solution {
 public:
     int numSquares(int n) {
         
-        vector<int> dp(n+1,-1);
+        if(ceil(sqrt(n)) == floor(sqrt(n)))
+            return 1;
         
-        dp[0] = 0;
+        while(n%4 == 0)
+            n /= 4;
         
-        for(int i = 1; i<=n; ++i)
-        {
-            dp[i] = i;
-            for(int j = 1; j*j <= i; ++j)
-            {
-                int sq = j*j;
-                dp[i] = min(dp[i], 1 + dp[i-sq]);
-            }
+        if(n%8 == 7)
+            return 4;
+        
+        for(int i = 1; i*i <= n; ++i){
+            int base = sqrt(n - (i*i));
+            if((base * base) == (n - (i*i)))
+                return 2;
         }
-        return dp[n];
+        
+        return 3;
+        
     }
 };
