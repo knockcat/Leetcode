@@ -1,15 +1,15 @@
 class Solution {
 public:
     
-    int helper(int index, vector<int>& prices, int buy, int ok, int n, vector<vector<int>>& dp)
+    int helper(int index, vector<int>& prices,int ok, int n, vector<vector<int>>& dp)
     {
         if(index == n  or ok == 4)
             return 0;
         if(dp[index][ok] != -1)
             return dp[index][ok];
-        if(buy or ok % 2 == 0)
-            return dp[index][ok] = max(-prices[index] + helper(index+1, prices,0,ok+1, n, dp) ,helper(index+1,prices,1,ok, n, dp));
-        return dp[index][ok] = max(prices[index] + helper(index+1, prices,1,ok+1, n, dp), helper(index+1, prices,0,ok, n, dp));
+        if(ok % 2 == 0)
+            return dp[index][ok] = max(-prices[index] + helper(index+1, prices,ok+1, n, dp) ,helper(index+1,prices,ok, n, dp));
+        return dp[index][ok] = max(prices[index] + helper(index+1, prices,ok+1, n, dp), helper(index+1, prices,ok, n, dp));
             
     }
     
@@ -17,7 +17,7 @@ public:
         
         int n = prices.size();
         vector<vector<int>> dp(n,vector<int>(4,-1));
-        return helper(0,prices,1,0,n,dp);
+        return helper(0,prices,0,n,dp);
         
     }
 };
