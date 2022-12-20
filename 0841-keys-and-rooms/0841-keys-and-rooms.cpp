@@ -1,28 +1,27 @@
 class Solution {
 public:
-    
-    void dfs(int sv, vector<vector<int>>& adj, vector<int>& visited)
-    {
-        visited[sv] = true;
-        for(auto itr : adj[sv])
-        {
-            if(!visited[itr])
-                dfs(itr,adj,visited);
-        }
-    }
-    
     bool canVisitAllRooms(vector<vector<int>>& rooms) {
         
         int n = rooms.size();
         vector<int> visited(n,false);
         
-        dfs(0,rooms,visited);
+        queue<int> q;
+        q.push(0);
+        
+        while(!q.empty())
+        {
+            int curr = q.front();
+            visited[curr] = true;
+            q.pop();
+            for(auto itr : rooms[curr])
+            {
+                if(!visited[itr])
+                    q.push(itr);
+            }
+        }
         
         for(int i = 0; i<n; ++i)
-        {
-            if(!visited[i])    
-                return false;
-        }
+            if(!visited[i]) return false;
         return true;
         
     }
