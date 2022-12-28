@@ -19,11 +19,7 @@ public:
     {
         if(!root)
             return 0;
-        int leftSum = helper(root->left);
-        int rightSum = helper(root->right);
-        
-        int currSum = root->val + leftSum + rightSum;
-        
+        int currSum = root->val + helper(root->left) + helper(root->right);
         ++mp[currSum];
         maxCount = max(maxCount,mp[currSum]);
         
