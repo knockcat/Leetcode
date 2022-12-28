@@ -7,25 +7,16 @@ public:
         for(auto itr : piles)
             pq.push(itr);
         
-        while(!pq.empty())
+        int res = accumulate(begin(piles),end(piles),0);
+        
+        while(k--)
         {
-            --k;
             int here = pq.top();
             pq.pop();
-            
-            here -= here/2;
-            pq.push(here);
-            if(!k)
-                break;
+            pq.push(here - here/2);
+            res -= here/2;
         }
         
-        int ans = 0;
-        while(!pq.empty())
-        {
-            ans += pq.top();
-            pq.pop();
-        }
-        
-        return ans;
+        return res;
     }
 };
