@@ -2,34 +2,16 @@ class Solution {
 public:
     bool detectCapitalUse(string word) {
         
-        vector<string> ans;
+        int caps = 0;
+        int n = word.size();
         
-        stringstream ss(word);
-        string ok;
-        
-        while(ss >> ok)
-            ans.push_back(ok);
-        
-        for(auto itr : ans)
+        for(auto itr : word)
         {
-            int caps = 0, small = 0, firstCaps = 0;
-            
-            if(itr[0] >= 'A' and itr[0] <= 'Z')
-                firstCaps = 1;
-            for(auto x : itr)
-            {
-                if(x >= 'a' and x <= 'z')
-                    ++small;
-                else
-                    ++caps;
-            }
-            if(small == itr.size() or caps == itr.size() or (firstCaps == 1  and small == itr.size()-1))
-            {
-                
-            }
-            else
-                return false;
+            if(isupper(itr))
+                ++caps;
         }
-        return true;
+        
+        return caps == 0 or caps == n or (caps == 1 and isupper(word[0]));
+        
     }
 };
