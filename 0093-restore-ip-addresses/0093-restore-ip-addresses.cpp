@@ -1,27 +1,41 @@
 class Solution {
 public:
-    vector<string> restoreIpAddresses(string s) {
-        vector<string> result;
-        string ip;
-        dfs(s,0,0,ip,result);
-        return result;
+    
+    bool isValid(string str)
+    {
+        if(str[0] == '0')
+            return false;
+        
+        int num = stoi(str);
+        
+        return num <= 255;
     }
-    void dfs(string s,int start,int step,string ip,vector<string>& result){
-        if(start==s.size()&&step==4){
-            ip.erase(ip.end()-1); 
-            result.push_back(ip);
+    
+    void helper(int idx, string& s, int part, string ans, vector<string>& res)
+    {
+        if(idx == s.size() or part == 4)
+        {
+            if(idx == s.size() and part == 4)
+            {
+                res.push_back(ans.substr(0,ans.size()-1));
+            }
             return;
         }
-        if(s.size()-start>(4-step)*3) return;
-        if(s.size()-start<(4-step)) return;
-        int num=0;
-        for(int i=start;i<start+3;i++){
-            num=num*10+(s[i]-'0');
-            if(num<=255){
-                ip+=s[i];
-                dfs(s,i+1,step+1,ip+'.',result);
-            }
-            if(num==0) break;
-        }
+        
+        helper(idx + 1, s, part + 1, ans + s[idx] + "." , res);
+        if(idx + 2 <= s.size() and isValid(s.substr(idx,2)))
+            helper(idx + 2, s, part + 1, ans + s.substr(idx,2) + "." , res);
+        if(idx + 3 <= s.size() and isValid(s.substr(idx,3)))
+            helper(idx + 3, s, part + 1, ans + s.substr(idx,3) +"." , res);
+    }
+    
+    vector<string> restoreIpAddresses(string s) {
+        
+        vector<string> res;
+        
+        helper(0, s, 0, "" , res);
+        
+        return res;
+        
     }
 };
