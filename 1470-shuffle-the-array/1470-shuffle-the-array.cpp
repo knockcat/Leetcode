@@ -2,14 +2,20 @@ class Solution {
 public:
     vector<int> shuffle(vector<int>& nums, int n) {
         
-        int i = 1, j = n;
-        while(i < nums.size() and j < nums.size())
+        // storing secNum in next 10 bits and or with first to combine second and first
+        for(int i = n; i < 2*n; ++i)
         {
-            int k = i;
-            while(i < j)
-                swap(nums[i++],nums[j]);
-            i = k + 2;
-            ++j;
+            int secNum = nums[i] << 10;
+            nums[i-n] |= secNum;
+        }
+        
+        for(int i = n-1; i>= 0; --i)
+        {
+            int secNum = nums[i] >> 10;
+            int firstNum = nums[i] & 1023;
+            
+            nums[2*i+1] = secNum;
+            nums[2*i] = firstNum;
         }
         return nums;
     }
