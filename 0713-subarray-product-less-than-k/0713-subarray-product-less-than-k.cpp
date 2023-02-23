@@ -1,23 +1,32 @@
-#define ll long long int
 class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+     
+        int n = nums.size();   
         
-        ll product = 1, count = 0;
-        int n = nums.size(), i = 0;
+        int i = 0, j = 0;
         
-        if(k == 0 or k == 1) return 0;
+        long long prod = 1, cnt = 0;
         
-        for(int j = 0; j < n; ++j)
+        if(k == 0 or k == 1)
+            return 0;
+        
+        while(j < n)
         {
-            product *= nums[j];
+            prod *= nums[j];
             
-            while(product >= k)
-                product /= nums[i++];
+            while(prod >=  k)
+            {
+                prod /= nums[i++];
+            }
             
-            count += (j-i+1);
+            if(prod < k)
+                cnt += (j - i + 1);
+            
+            ++j;
         }
         
-        return count;
+        return cnt;
+        
     }
 };
