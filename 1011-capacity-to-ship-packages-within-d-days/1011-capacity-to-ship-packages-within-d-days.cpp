@@ -1,50 +1,45 @@
 class Solution {
 public:
     
-    
     int binarySearch(vector<int>& weights, int days, int mid)
     {
-        int currDays = 1;
+        int cnt = 1;
+        int n = weights.size();
         int sum = 0;
-        for(auto &itr : weights)
+        for(int i = 0; i<n; ++i)
         {
-            if(sum + itr > mid)
+            if(sum + weights[i] > mid)
             {
-                sum = itr;
-                ++currDays;
+                ++cnt;
+                sum = weights[i];
             }
             else
-            {
-                sum += itr;
-            }
+                sum += weights[i];
         }
         
-        return (currDays <= days);
+        return (cnt <= days);
     }
     
     
     int shipWithinDays(vector<int>& weights, int days) {
         
-        int high = accumulate(weights.begin(),weights.end(),0);
-        int low = *max_element(weights.begin(),weights.end());
+        int right = accumulate(weights.begin(),weights.end(),0);
+        int left = *max_element(weights.begin(),weights.end());
         
-        int ans = low;
-        
-        while(low <= high)
+        int ans = left;
+        while(left <= right)
         {
-            int mid = low + (high - low)/2;
-            
-            if(binarySearch(weights,days, mid))
+            int mid = (right + left)/2;
+            if(binarySearch(weights,days,  mid))
             {
-                ans = mid;
-                high = mid-1;
+                ans =  mid;
+                right = mid - 1;
             }
             else
-                low = mid + 1;
+                left = mid + 1;
         }
         
         return ans;
-        
         
     }
 };
