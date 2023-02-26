@@ -1,52 +1,56 @@
 class Solution {
-public:
     
-    private:
-        int timer = 0;
-   
-    void dfs(int sv, int parent, vector<bool>& visited, vector<int>& dis, vector<int>& low, int timer, vector<int> adj[],vector<vector<int>>& vp){
-        visited[sv] = true;
-        dis[sv] = low[sv] = timer++;
+private:
+    int timer = 0;
+public:
+    void dfs(int sv, int par, vector<int> adj[], vector<int>& visited, vector<int>& disc, vector<int>& low, vector<vector<int>>& bridges)
+    {
+        low[sv] = disc[sv] = ++timer;
+        visited[sv] = 1;
         
-        for(auto itr : adj[sv])
+        for(auto child : adj[sv])
         {
-            if(itr == parent)
+            if(child == par)
                 continue;
-            if(!visited[itr])
+            if(!visited[child])
             {
-                dfs(itr,sv,visited,dis,low,timer,adj,vp);
-                low[sv] = min(low[sv],low[itr]);
+                dfs(child, sv, adj, visited, disc, low, bridges);
+                low[sv] = min(low[sv],low[child]);
                 
-                if(low[itr] > dis[sv])
+                if(low[child] > disc[sv])
                 {
-                    vp.push_back({itr,sv});
+                    bridges.push_back({sv, child});
                 }
             }
-            else{
-                low[sv] = min(low[sv],low[itr]);
+            else
+            {
+                low[sv] = min(low[sv],low[child]);
             }
         }
     }
-    public:
-    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections)
-    {
-        vector<int> adj[n];
+    
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        
+        // no of bridges in a graph
+        
+        vector<int> adj[n+1];
+        vector<int> visited(n,false);
+        vector<int> disc(n,-1), low(n,-1);
+        vector<vector<int> > bridges;
+        
         for(auto itr : connections)
         {
             adj[itr[0]].push_back(itr[1]);
             adj[itr[1]].push_back(itr[0]);
         }
         
-        vector<bool> visited(n,false);
-        vector<int> dis(n,-1), low(n,-1);
-        vector<vector<int>> vp;
-        int timer = 0;
-        for(int i = 0; i<n; ++i)
+        for(int i = 0; i < n; ++i)
         {
             if(!visited[i])
-                dfs(i,-1,visited,dis,low,timer,adj,vp);
+                dfs(i, -1, adj, visited, disc, low, bridges);
         }
         
-        return vp;
+        return bridges;
+        
     }
 };
