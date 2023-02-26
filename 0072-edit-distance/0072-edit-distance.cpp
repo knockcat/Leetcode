@@ -1,27 +1,35 @@
+#define ll long long
 class Solution {
 public:
     
-
+    long long helper(int i, int j,int n, int m, string& word1, string& word2, vector<vector<int>>& dp )
+    {   
+        if(j >= m)
+            return n - i;
+        if(i >= n)
+            return m - j;
+        if(i >= n or j >= m)
+            return INT_MAX;
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        if(word1[i] == word2[j])
+            return dp[i][j] = 0 + helper(i+1, j+1, n, m, word1, word2, dp);
+        else
+        {
+            ll ins = 1 + helper(i,j+1,n,m, word1, word2, dp);
+            ll del = 1 + helper(i+1, j,n,m, word1, word2, dp);
+            ll rep = 1 + helper(i+1, j+1,n,m, word1, word2, dp);
+            
+            return dp[i][j] = min({ins, del, rep});
+        }
+    }
+    
     int minDistance(string word1, string word2) {
         
         int n = word1.size(), m = word2.size();
-        vector<int> prev(m+1,0), curr(m+1,0);
-        
-        for(int j = 0; j<=m; ++j)
-            prev[j] = j;
-       
-        for(int i = 1; i<=n; ++i)
-        {
-            curr[0] = i;
-            for(int j = 1; j<=m; ++j)
-            {
-                if(word1[i-1] == word2[j-1])
-                    curr[j] = prev[j-1];
-                else 
-                    curr[j] = 1 + min({prev[j-1], prev[j], curr[j-1]});
-            }
-            prev = curr;
-        }
-        return prev[m];
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        return helper(0,0,n,m,word1,word2,dp);
     }
 };
