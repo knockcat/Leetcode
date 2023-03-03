@@ -1,58 +1,42 @@
 class Solution {
 public:
-    
-    vector<int> prefix_function(string s)   
-    {
-        int n = s.size();
-        vector<int> pi(n,0);
+    int strStr(string haystack, string needle) {
+        
+        int n = needle.size();
+        vector<int> lps(n,0);
 
-        for(int i = 1;  i<n; i++)
+        for(int i = 1; i < n; ++i)
         {
-            int j = pi[i-1];
-            while(j>0 and s[i]!=s[j])
-                j = pi[j-1];
-
-            if(s[i] == s[j])
-                j++;
-            pi[i] = j;
+            int j = lps[i-1] ;
+            
+            while(j > 0 and needle[i] != needle[j])
+                j = lps[j-1];
+            
+            if(needle[i] == needle[j])
+                ++j;
+            
+            lps[i] = j;
         }
-    //Time Complexity = O(n)
-    return pi;
-    }
-    
-    int strStr(string haystack, string needle)
-    {
-        if(needle.length() == 0)
-            return 0;
         
-        vector<int> prefix = prefix_function(needle);
         
-        int pos = -1;
-        int i(0), j(0);
-        while(i<haystack.size())
+        int i = 0, j = 0, m = haystack.length();
+        
+        while(i < m)
         {
             if(haystack[i] == needle[j])
             {
-                i++;
-                j++;
+                ++i,++j;
             }
-            else
-            {
-                if(j!=0)
-                    j = prefix[j-1];
+            else if(haystack[i] != needle[j]){
+                if(j == 0)
+                    ++i;
                 else
-                    i++;
+                    j = lps[j-1];
             }
-
-            if(j == needle.size())
-            {
-                pos = i - needle.size();
-                break;
-            }
+            if(j == n)
+                return i - n;
         }
-
-        cout<<pos;
-        return pos;
         
+        return -1;
     }
 };
