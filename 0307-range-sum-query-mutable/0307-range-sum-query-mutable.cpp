@@ -1,77 +1,115 @@
 class NumArray {
 public:
     
+    public:
     void buildTree(int idx, int low, int high)
     {
         if (low == high)
         {
-            seg[idx] = v[low];
+            tree[idx] = arr[low];
             return;
         }
 
-        int mid = (low + high) / 2;
+        int mid = (low + high) >> 1;
         buildTree(2 * idx + 1, low, mid);
         buildTree(2 * idx + 2, mid + 1, high);
 
-        // update
-        seg[idx] = seg[2 * idx + 1] + seg[2 * idx + 2];
-    }
+        // updation part
 
-    int query(int idx, int low, int high, int l, int r)
+        // sum
+        tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+
+        // min
+        // tree[idx] = min(tree[2 * idx + 1], tree[2 * idx + 2]);
+        return;
+    }
+    
+    public:
+    int queryTree(int idx, int low, int high, int l, int r)
     {
         // no overlap
         // l r low high or low high l r
         if (r < low or l > high)
             return 0;
+            // return INT_MAX; // min
 
         // complete overlap
         // [l low high r]
         if (low >= l and high <= r)
-            return seg[idx];
+            return tree[idx];
 
         // partial overlap
         int mid = (low + high) / 2;
-        int left = query(2 * idx + 1, low, mid, l, r);
-        int right = query(2 * idx + 2, mid + 1, high, l, r);
+        int left = queryTree(2 * idx + 1, low, mid, l, r);
+        int right = queryTree(2 * idx + 2, mid + 1, high, l, r);
 
-        // update
+        // updation part
+        // sum
+
         return left + right;
+
+        // min
+        // return min(left, right);
     }
 
-    void update(int idx, int low, int high, int ind, int val)
+public:
+    void updateTree(int idx, int low, int high, int ind, int val)
     {
         if (low == high)
         {
-            seg[idx] = val;
+            // sum ranges increment tree[idx] by val case
+            // tree[idx] += val;
+
+            // min and update single value case
+            tree[idx] = val;
             return;
         }
-
-        int mid = (low + high) / 2;
+        int mid = (low + high) >> 1;
         if (ind <= mid)
-            update(2 * idx + 1, low, mid, ind, val);
+            updateTree(2 * idx + 1, low, mid, ind, val);
         else
-            update(2 * idx + 2, mid + 1, high, ind, val);
+            updateTree(2 * idx + 2, mid + 1, high, ind, val);
 
-        // update
-        seg[idx] = seg[2 * idx + 1] + seg[2 * idx + 2];
+        // updation Part
+        // sum
+
+        tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+
+        // min
+
+        // tree[idx] = min(tree[2 * idx + 1], tree[2 * idx + 2]);
     }
     
-    vector<int> seg;
-    vector<int> v;
+    void build()
+    {
+        buildTree(0, 0, N - 1);
+    }
     
+    int query(int l, int r)
+    {
+        return queryTree(0, 0, N - 1, l, r);
+    }
+
+    void Update(int ind, int val)
+    {
+        updateTree(0, 0, N - 1, ind, val);
+    }
+    
+    vector<int> tree, arr;
+    int N;
     NumArray(vector<int>& nums) {
-        int n = nums.size();
-        seg.resize(n * 4 + 5);
-        v = nums;
-        buildTree(0,0,n-1);
+        N = nums.size();
+        arr =  nums;
+        tree.resize(N*4 + 5);
+        build();
     }
     
     void update(int index, int val) {
-        update(0,0,v.size()-1,index,val);
+        Update(index,val);
     }
     
     int sumRange(int left, int right) {
-        return query(0,0,v.size()-1,left,right);
+        return query(left, right);
     }
 };
 
