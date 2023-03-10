@@ -1,33 +1,68 @@
-class Node{
-    
-    public:
-    
-    Node* child[26] = {nullptr};
+class Node
+{
+
+public:
+    Node *child[26] = {nullptr};
     bool isWord = false;
-    
+    int cntEndWith = 0;
+    int cntPrefix = 0;
+
     bool containsKey(char ch)
     {
-        return (child[ch-'a'] != nullptr);
+        return (child[ch - 'a'] != nullptr);
     }
-        
-    void put(char ch, Node* node)
+
+    void put(char ch, Node *node)
     {
-        child[ch-'a'] = node;
+        child[ch - 'a'] = node;
     }
-    
-    Node* get(char ch)
+
+    Node *get(char ch)
     {
         return child[ch - 'a'];
     }
-    
-    void setEnd(){
+
+    void setEnd()
+    {
         isWord = true;
     }
-    
-    bool isEnd(){
+
+    bool isEnd()
+    {
         return isWord;
     }
+
+    void increaseEnd()
+    {
+        ++cntEndWith;
+    }
+
+    void increasePrefix()
+    {
+        ++cntPrefix;
+    }
+
+    void deleteEnd()
+    {
+        --cntEndWith;
+    }
+
+    void reducePrefix()
+    {
+        --cntPrefix;
+    }
+
+    int getEnd()
+    {
+        return cntEndWith;
+    }
+
+    int getPrefix()
+    {
+        return cntPrefix;
+    }
 };
+
 
 class Trie {
 public:
@@ -40,12 +75,14 @@ public:
     
     void insert(string word) {
         Node *temp = root;
-        for(int i = 0; i < word.size(); ++i)
+        for (int i = 0; i < word.size(); ++i)
         {
-            if(!temp->containsKey(word[i]))
-                temp->put(word[i],new Node());
-            temp =            temp->get(word[i]);
+            if (!temp->containsKey(word[i]))
+                temp->put(word[i], new Node());
+            temp = temp->get(word[i]);
+            temp->increasePrefix();
         }
+        temp->increaseEnd();
         temp->setEnd();
     }
     
