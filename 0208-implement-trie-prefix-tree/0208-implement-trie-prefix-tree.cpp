@@ -1,46 +1,72 @@
+class Node{
+    
+    public:
+    
+    Node* child[26] = {nullptr};
+    bool isWord = false;
+    
+    bool containsKey(char ch)
+    {
+        return (child[ch-'a'] != nullptr);
+    }
+        
+    void put(char ch, Node* node)
+    {
+        child[ch-'a'] = node;
+    }
+    
+    Node* get(char ch)
+    {
+        return child[ch - 'a'];
+    }
+    
+    void setEnd(){
+        isWord = true;
+    }
+    
+    bool isEnd(){
+        return isWord;
+    }
+};
+
 class Trie {
 public:
-    
-    struct Node{
-        Node *Child[26] = {nullptr};
-        bool isWord = false;
-    };
-    
-    Node* root = new Node();
-    
+    private:
+        Node* root;
+    public:
     Trie() {
-        
+        root = new Node();
     }
     
     void insert(string word) {
-        Node * temp = root;
-        for(int i= 0; i<word.size();++i)
+        Node *temp = root;
+        for(int i = 0; i < word.size(); ++i)
         {
-            if(!temp->Child[word[i]-'a'])
-                temp->Child[word[i]-'a'] = new Node();
-            temp = temp->Child[word[i]-'a'];
+            if(!temp->containsKey(word[i]))
+                temp->put(word[i],new Node());
+            temp =            temp->get(word[i]);
         }
-        temp->isWord = true;
+        temp->setEnd();
     }
     
     bool search(string word) {
         Node *temp = root;
-        for(int i = 0; i < word.size(); ++i)
+        for(int i = 0; i<word.size(); ++i)
         {
-            if(!temp->Child[word[i]-'a'])
+            if(!temp->containsKey(word[i]))
                 return false;
-            temp = temp->Child[word[i]-'a'];
+            temp = temp->get(word[i]);
         }
-        return temp->isWord;
+        return temp->isEnd();
     }
     
     bool startsWith(string prefix) {
         Node *temp = root;
         for(int i = 0; i<prefix.size(); ++i)
         {
-            if(!temp->Child[prefix[i] - 'a'])
+            if(!temp->containsKey(prefix[i]))
                 return false;
-            temp = temp->Child[prefix[i] - 'a'];
+            temp = temp->get(prefix[i]);
         }
         return true;
     }
