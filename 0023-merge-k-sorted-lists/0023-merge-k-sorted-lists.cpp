@@ -10,31 +10,37 @@
  */
 class Solution {
 public:
+    
+    ListNode* merge(ListNode* l1, ListNode* l2)
+    {
+        if(!l1)
+            return l2;
+        if(!l2)
+            return l1;
+        
+        if(l1->val < l2->val)
+        {
+            l1->next = merge(l1->next,l2);
+            return l1;
+        }
+        else
+        {
+            l2->next = merge(l1,l2->next);
+            return l2;
+        }
+    }
+    
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         
-        priority_queue<int,vector<int>,greater<int>> pq;
+        if(!lists.size())
+            return nullptr;
         
-        for(auto itr : lists)
+        ListNode* head = lists[0];
+        
+        for(int i = 1; i<lists.size(); ++i)
         {
-            while(itr)
-            {
-                pq.push(itr->val);
-                itr = itr->next;
-            }
+            head = merge(head,lists[i]);
         }
-        
-        ListNode *ptr = new ListNode();
-        ListNode *ans = ptr;
-        while(!pq.empty())
-        {
-            ListNode* temp = new ListNode(pq.top());
-            ans->next = temp;
-            ans = ans->next;
-            pq.pop();
-        }
-        
-        return ptr->next;
-        
-        
+        return head;
     }
 };
