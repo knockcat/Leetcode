@@ -9,43 +9,33 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-
-#define ll long long int
 class Solution {
 public:
-    vector<string> ans;
     
-    void helper(TreeNode* root,string str)
+    
+    void sumToLeaf(TreeNode* root, int val, int&res)
     {
         if(!root)
             return;
-        
-        str += to_string(root->val);
+        int curr = val * 10 + root->val;
         
         if(!root->left and !root->right)
-        {
-            ans.push_back(str);
-            if(!str.empty())
-                str.pop_back();
-        }
+            res += curr;
         
-        helper(root->left,str);
-        helper(root->right,str);
-        
+        sumToLeaf(root->left,curr, res);
+        sumToLeaf(root->right,curr,res);
     }
-    
     
     int sumNumbers(TreeNode* root) {
         
         if(!root)
             return 0;
         
-        helper(root,"");
+        int res = 0;
         
-        ll sum = 0;
-        for(auto &itr : ans)
-            sum += stoll(itr);
+        sumToLeaf(root,0,res);
         
-        return sum;
+        return res;
+        
     }
 };
