@@ -1,13 +1,13 @@
 class Solution {
 public:
     
-    void dfs(int sv, vector<bool>& visited, vector<pair<int,int>> adj[])
+    void dfs(int sv, vector<pair<int,int>> adj[], vector<bool>& visited)
     {
         visited[sv] = true;
         for(auto itr : adj[sv])
         {
             if(!visited[itr.first])
-                dfs(itr.first,visited,adj);
+                dfs(itr.first,adj,visited);
         }
     }
     
@@ -15,20 +15,21 @@ public:
         
         vector<pair<int,int>> adj[n+1];
         
-        for(int i = 0; i<roads.size(); ++i)
+        for(auto itr : roads)
         {
-            adj[roads[i][0]].push_back({roads[i][1],roads[i][2]});
-            adj[roads[i][1]].push_back({roads[i][0],roads[i][2]});
+            adj[itr[0]].push_back({itr[1],itr[2]});
+            adj[itr[1]].push_back({itr[0],itr[2]});
         }
         
         vector<bool> visited(n+1,false);
+        
+        dfs(1,adj,visited);
         int ans = INT_MAX;
-        dfs(1,visited,adj);
-               
-        for(int i = 0; i<roads.size(); ++i)
+        
+        for(auto itr : roads)
         {
-            if(visited[roads[i][0]] and visited[roads[i][1]])
-                ans = min(ans,roads[i][2]);
+            if(visited[itr[0]] and visited[itr[1]])
+                ans = min(ans,itr[2]);
         }
         
         return ans;
