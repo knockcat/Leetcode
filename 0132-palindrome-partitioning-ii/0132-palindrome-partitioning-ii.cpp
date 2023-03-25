@@ -36,9 +36,26 @@ public:
         
         int n = s.size();
         
-        vector<int> dp(n+1,-1);
+        // vector<int> dp(n+1,-1);
         
-        return helper(0,s,dp) - 1;
-
+        // return helper(0,s,dp) - 1;
+        
+        vector<int> dp(n+1,0);
+        
+        for(int idx = n-1; idx>=0 ; --idx)
+        {   
+            int ans = INT_MAX;
+            for(int i =idx ; i < n; ++i)
+            {
+                if(isPalindrome(idx, i, s))
+                {
+                    int cost = 1 + dp[i+1];
+                    ans = min(ans,cost);
+                }
+            }
+           dp[idx] = ans;
+        }
+        
+        return dp[0] - 1;
     }
 };
