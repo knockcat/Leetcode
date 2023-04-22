@@ -2,27 +2,32 @@ class Solution {
 public:
     double myPow(double x, int n) {
         
-        // fast power
+        double res = 1.0;
         
         long long num = n;
         
-        if(num < 0) num *= -1;
-        
-        double result = 1.0;
+        if(num < 0)
+        {
+            num *= -1;
+        }
         
         while(num > 0)
         {
             if(num & 1)
-                result = result * x;
-       
+               res = res * x;
+            
             x = (x * x);
+            
             num >>= 1;
             
         }
-        
+
         if(n < 0)
-            result = (double)1.0/(double)result;
+        {
+            res = (double)1.0/(double)res;
+        }
         
-        return result;
+        return res;
+        
     }
 };
