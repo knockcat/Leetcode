@@ -2,7 +2,7 @@ class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
         
-        set<int> st(nums.begin(),nums.end());
+        unordered_set<int> st(nums.begin(),nums.end());
         
         int ans = 0, n = nums.size();
         
@@ -10,9 +10,9 @@ public:
         {
             if(!st.count(nums[i] - 1))
                {
-                   int curr = 0;
+                   int curr = 1;
                    int var = nums[i];
-                   while(st.count(var))
+                   while(st.count(var+1))
                    {
                         ++var;
                        ++curr;
