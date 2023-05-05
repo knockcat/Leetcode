@@ -1,54 +1,54 @@
 class Solution {
 public:
-    
-    bool dfs(int sv, vector<vector<int>>& graph, vector<bool>& visited, vector<bool>& pathVisited, vector<bool>& check)
-    {
-        visited[sv] = true;
-        pathVisited[sv] = true;
-        check[sv] = false;
-        
-        for(auto itr : graph[sv])
-        {
-            if(!visited[itr])
-            {
-                if(dfs(itr, graph, visited, pathVisited, check) == true)
-                {
-                    check[itr] = false;
-                    return true;
-                }
-            }
-            else if(pathVisited[itr])
-            {
-                check[itr] = false;
-                return true;
-            }
-        }
-        
-        pathVisited[sv] = false;
-        check[sv] = true;
-        
-        return false;
-    }
-    
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         
         int n = graph.size();
         
-        vector<bool> visited(n+1, false), pathVisited(n+1, false), check(n+1, false);
+        vector<int> adj[n+1];
+        
+        for(int i = 0; i < n; ++i)
+        {
+            for(auto itr : graph[i])
+                adj[itr].push_back(i);
+                
+        }
+            
+        
+        vector<int> indegree(n, 0);
+        
+        for(int i = 0; i < n; ++i)
+        {
+            for(auto itr : adj[i])
+                ++indegree[itr];
+        }
+        
+        queue<int> q;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            if(indegree[i] == 0)
+                q.push(i);
+        }
         
         vector<int> safe;
         
-        for(int i = 0; i < n; ++i)
+        while(!q.empty())
         {
-            if(!visited[i])
-                dfs(i, graph, visited, pathVisited, check);
+            int curr = q.front();
+            q.pop();
+            
+            safe.push_back(curr);
+            
+            for(auto itr : adj[curr])
+            {
+                --indegree[itr];
+                
+                if(indegree[itr] == 0)
+                    q.push(itr);
+            }
         }
         
-        for(int i = 0; i < n; ++i)
-        {
-            if(check[i])
-                safe.push_back(i);
-        }
+        sort(safe.begin(),safe.end());
         
         return safe;
         
