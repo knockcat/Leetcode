@@ -1,29 +1,5 @@
 class Solution {
     
-private:
-    bool dfs(int sv, vector<int> adj[], vector<bool>& visited, stack<int>& st, vector<bool>& pathVisited)
-    {
-        visited[sv] = true;
-        pathVisited[sv] = true;
-        
-        for(auto itr : adj[sv])
-        {
-            if(!visited[itr])
-            {
-                if(dfs(itr, adj, visited, st, pathVisited) == true)
-                    return true;
-            }
-            else if(pathVisited[itr])
-                return true;
-        }
-        
-        pathVisited[sv] = false;
-        
-        st.push(sv);
-        
-        return false;
-    }
-    
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         
@@ -36,26 +12,39 @@ public:
             adj[itr[1]].push_back(itr[0]);
         }
         
-        vector<bool> visited(n, false), pathVisited(n, false);
-        
-        vector<int> topo;
-        
-        stack<int> st;
+        vector<int> indegree(n, 0), topo;
         
         for(int i = 0; i < n; ++i)
         {
-            if(!visited[i])
+            for(auto itr :  adj[i])
+                ++indegree[itr];
+        }
+        
+        queue<int> q;
+        
+        for(int i = 0; i < n; ++i)
+        {
+            if(indegree[i] == 0)
+                q.push(i);
+        }
+        
+        while(!q.empty())
+        {
+            int curr = q.front();
+            q.pop();
+            
+            topo.push_back(curr);
+            
+            for(auto itr : adj[curr])
             {
-                if(dfs(i, adj, visited, st, pathVisited) == true)
-                    return {};
+                --indegree[itr];
+                if(indegree[itr] == 0)
+                    q.push(itr);
             }
         }
         
-        while(!st.empty())
-        {
-            topo.push_back(st.top());
-            st.pop();
-        }
+        if(topo.size() < n)
+            return {};
         
         return topo;
     }
