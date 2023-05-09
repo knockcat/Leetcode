@@ -1,19 +1,12 @@
-/**
- * @param {number[]} arr
- * @param {Function} fn
- * @return {number[]}
- */
-var filter = function(arr, fn) {
-    
-    var ans = [];
+function filter(arr: number[], fn: (n: number, i: number) => any): number[] {
+
+    const ans : number[] = [];
     
     for(var i = 0; i < arr.length; ++i)
     {
-        if(fn(arr[i], i))
+        if(fn(arr[i],i))
             ans.push(arr[i]);
     }
     
     return ans;
-    
 };
-
