@@ -1,18 +1,14 @@
-/**
- * @param {Function} fn
- * @return {Function}
- */
-var once = function(fn) {
-    
-    var ok = false;
-    
-    return function(...args){
-        if(ok)    
+function once<T extends (...args: any[]) => any>(fn: T): 
+ ((...args: Parameters<T>) => ReturnType<T> | undefined) {
+     
+     var ok = false;
+  return function (...args) {
+        if(ok)
             return undefined;
         ok = true;
         return fn(...args);
-    }
-};
+  };
+}
 
 /**
  * let fn = (a,b,c) => (a + b + c)
