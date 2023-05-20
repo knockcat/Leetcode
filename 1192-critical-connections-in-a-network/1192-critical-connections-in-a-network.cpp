@@ -1,48 +1,52 @@
 class Solution {
-    
 private:
     int timer = 0;
-public:
-    void dfs(int sv, int par, vector<int> adj[], vector<int>& visited, vector<int>& disc, vector<int>& low, vector<vector<int>>& bridges)
+    
+    void dfs(int sv, int par, vector<int> adj[], vector<bool>& visited, vector<int>& disc, vector<int>& low, vector<vector<int>>& bridges)
     {
-        low[sv] = disc[sv] = ++timer;
-        visited[sv] = 1;
+        visited[sv] = true;
         
-        for(auto child : adj[sv])
+        disc[sv] = low[sv] = ++timer;
+        
+        for(auto itr : adj[sv])
         {
-            if(child == par)
+            if(itr == par)
                 continue;
-            if(!visited[child])
+            
+            if(!visited[itr])
             {
-                dfs(child, sv, adj, visited, disc, low, bridges);
-                low[sv] = min(low[sv],low[child]);
+                dfs(itr, sv, adj, visited, disc, low, bridges);
                 
-                if(low[child] > disc[sv])
+                low[sv] = min(low[sv], low[itr]);
+                    
+                if(low[itr] > disc[sv])
                 {
-                    bridges.push_back({sv, child});
+                    bridges.push_back({sv, itr});
                 }
             }
             else
             {
-                low[sv] = min(low[sv],low[child]);
+                low[sv] = min(low[sv], low[itr]);
             }
         }
     }
     
+public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
         
-        // no of bridges in a graph
-        
-        vector<int> adj[n+1];
-        vector<int> visited(n,false);
-        vector<int> disc(n,-1), low(n,-1);
-        vector<vector<int> > bridges;
+        vector<int> adj[n];
         
         for(auto itr : connections)
         {
             adj[itr[0]].push_back(itr[1]);
             adj[itr[1]].push_back(itr[0]);
         }
+        
+        vector<bool> visited(n, false);
+        
+        vector<int> disc(n, 0) , low(n, 0);
+        
+        vector<vector<int>> bridges;
         
         for(int i = 0; i < n; ++i)
         {
