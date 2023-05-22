@@ -10,20 +10,39 @@
  * };
  */
 class Solution {
-public:
-     int rec(TreeNode* root) {
-        if (!root) return 0;
-        int subtree = rec(root->left) + rec(root->right) + root->val;
-        res = max(res, (total - subtree) * subtree);
-        return subtree;
-    }
-    
-    int maxProduct(TreeNode* root) {
-        total = rec(root);
-        rec(root);
-        return res % int(pow(10,9)+7);
-    }
     
 private:
-    long res = 0, total = 0;
+    
+    long long total = 0 , ans = 0;
+    
+    int mod = 1e9 + 7;
+    
+    int helper(TreeNode* root)
+    {
+        if(!root)
+            return 0;
+        
+        int left = helper(root->left);
+        int right = helper(root->right);
+        
+        int subTree = left + right + root->val;
+        
+        ans = max(ans, ((total - subTree) * subTree));
+        
+        return subTree;
+    }
+    
+    
+public:
+    int maxProduct(TreeNode* root) {
+        
+        total = helper(root);
+        
+        helper(root);
+        
+        return ans % mod;;
+        
+        
+        
+    }
 };
