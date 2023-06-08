@@ -4,39 +4,22 @@ public:
         
         int n = grid.size(), m = grid[0].size();
         
-        int end = m-1, cnt = 0;
+        int i = n-1, j = 0;
         
-        for(int i = 0; i < n; ++i)
+        int negCnt = 0;
+        
+        while(i >= 0 and j < m)
         {
-            if(grid[i][0] < 0)
-            {
-                cnt += m;
-            }
-            else if(grid[i][m-1] >= 0)
-            {
-                continue;
-            }
+            if(grid[i][j] >= 0)
+                ++j;
             else
             {
-                int low = 0, high = end;
-                
-                while(low <= high)
-                {
-                    int mid = low + (high - low)/2;
-                    
-                    if(grid[i][mid] >= 0)
-                        low = mid+1;
-                    else
-                        high = mid-1;
-                }
-                
-                cnt += m - low;
-                end = low;
+                negCnt += m - j;
+                --i;
             }
         }
         
-        return cnt;
+        return negCnt;
         
     }
-    
 };
