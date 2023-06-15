@@ -4,44 +4,47 @@ public:
         
         int n = s.size();
         
-        vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+        int maxi = 0;
         
         string ans;
         
-        int maxLength = 0;
+         function<string(int,int)> helper = [=](int start, int end){
+            
+            while( start >= 0 and end < n)
+            {
+                if(s[start] == s[end])
+                {
+                    --start, ++end;
+                }
+                else 
+                    break;
+            }
+            
+            return s.substr(start+1, end-start-1);
+            
+        };
         
-        for(int diff = 0; diff < n; ++diff)
+        for(int i = 0; i < n; ++i)
         {
-            for(int i = 0, j = i+diff; i < n and j < n; ++i, ++j)
-            {   
-                if(i == j)
-                    dp[i][j] = 1;
-                else if(diff == 1)
-                {
-                    if(s[i] == s[j])
-                    {
-                        dp[i][j] = 2;
-                    }
-                }
-                else
-                {
-                    if(s[i] == s[j])
-                    {
-                        if(dp[i+1][j-1])
-                        {
-                            dp[i][j] = dp[i+1][j-1] + 2;
-                        }
-                    }
-                }
-                
-                int len = j - i + 1;
-                
-                if(dp[i][j] > maxLength)
-                    ans = s.substr(i,len);
-                
+            string oddCase = helper(i,i);
+            
+            if(oddCase.length() > maxi)
+            {
+                maxi = oddCase.length();
+                ans = oddCase;
+            }
+            
+            string evenCase = helper(i,i+1);
+            
+            if(evenCase.length() > maxi)
+            {
+                maxi = evenCase.length();
+                ans = evenCase;
             }
         }
         
+        
         return ans;
+        
     }
 };
