@@ -1,22 +1,32 @@
 class Solution {
-public:
+
+private:
+    int helper(int idx, bool buy, int n, vector<int>& prices, int fee, vector<vector<int>>& dp)
+    {
+        if(idx == n)
+            return 0;
+        
+        if(dp[idx][buy] != -1)
+            return dp[idx][buy];
+        
+        int take = INT_MIN, take2 = INT_MIN;
+        
+        if(!buy)
+            take = max(-prices[idx] + helper(idx+1, !buy, n, prices, fee, dp), helper(idx+1, buy, n, prices, fee, dp));
+        else
+            take2 = max(prices[idx] - fee + helper(idx+1, !buy, n, prices, fee, dp), helper(idx+1, buy, n, prices, fee, dp));
+        
+        return dp[idx][buy] = max({take, take2});
+    }
     
+public:
     int maxProfit(vector<int>& prices, int fee) {
         
         int n = prices.size();
-        vector<int> curr(2,0), ahead(2,0);
         
-        for(int i = n-1; i>=0; --i)
-        {
-            for(int buy = 1; buy>=0; --buy)
-            {
-                if(buy == 1)
-                    curr[buy] = max(-prices[i] + ahead[0], ahead[1]);
-                else
-                    curr[buy] = max(prices[i] - fee +  ahead[1], ahead[0]);
-            }
-            ahead = curr;
-        }
-        return ahead[1];
+        vector<vector<int>> dp(n, vector<int>(2, -1));
+        
+        return helper(0, 0, n, prices, fee, dp);
+        
     }
 };
