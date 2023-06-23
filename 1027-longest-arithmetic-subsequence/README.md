@@ -10,24 +10,24 @@
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input:</strong> nums = [3,6,9,12]
+<pre style="position: relative;"><strong>Input:</strong> nums = [3,6,9,12]
 <strong>Output:</strong> 4
 <strong>Explanation: </strong> The whole array is an arithmetic sequence with steps of length = 3.
-</pre>
+<div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre>
 
 <p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> nums = [9,4,7,2,10]
+<pre style="position: relative;"><strong>Input:</strong> nums = [9,4,7,2,10]
 <strong>Output:</strong> 3
 <strong>Explanation: </strong> The longest arithmetic subsequence is [4,7,10].
-</pre>
+<div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre>
 
 <p><strong class="example">Example 3:</strong></p>
 
-<pre><strong>Input:</strong> nums = [20,1,15,3,10,5,8]
+<pre style="position: relative;"><strong>Input:</strong> nums = [20,1,15,3,10,5,8]
 <strong>Output:</strong> 4
 <strong>Explanation: </strong> The longest arithmetic subsequence is [20,15,10,5].
-</pre>
+<div class="open_grepper_editor" title="Edit &amp; Save To Grepper"></div></pre>
 
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
