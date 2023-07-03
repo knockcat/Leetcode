@@ -2,20 +2,22 @@ class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
         
-        int sum = 0, n = nums.size();
-        vector<int> cnt(k,0);
+        int n = nums.size(), sum = 0;
         
-        for(auto itr : nums)
+        vector<int> v(k,0);
+        
+        for(int i = 0; i < n; ++i)
         {
-            sum += (itr % k + k) % k;
-            ++cnt[sum%k];
+            sum +=  (nums[i]%k + k)%k;
+            ++v[sum%k];
         }
         
-        int res = cnt[0];
-        for(auto itr : cnt)
-        {
-            res += (itr * (itr - 1))/2;
-        }
-        return res;
+        int ans = v[0];
+        
+        for(auto itr : v)
+            ans += (itr * (itr-1))/2;
+
+        return ans;
+        
     }
 };
