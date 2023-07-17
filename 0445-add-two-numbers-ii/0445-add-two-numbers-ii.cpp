@@ -9,69 +9,55 @@
  * };
  */
 class Solution {
-    
-private:
-    ListNode* reverseList(ListNode *head)
-    {
-        ListNode* prev = nullptr;
-        
-        while(head)
-        {
-            ListNode* temp = head->next;
-            head->next = prev;
-            prev = head;
-            head = temp;
-        }
-        return prev;
-    }
-    
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-     
-        l1 = reverseList(l1);
-        l2 = reverseList(l2);
+        
+        stack<int> st1;
+        stack<int> st2;
+        
+        while(l1)
+        {
+            st1.push(l1->val);
+            l1 = l1->next;
+        }
+        
+        while(l2)
+        {
+            st2.push(l2->val);
+            l2 = l2->next;
+        }
         
         ListNode* dummy = new ListNode(0);
         ListNode* ptr = dummy;
         
         int carry = 0;
         
-        while(l1 or l2)
+        while(!st1.empty() or !st2.empty())
         {
-            int sum = carry;
+            int a = 0, b = 0;
             
-            if(l1)
+            if(!st1.empty())
             {
-                sum += l1->val;
-                l1 = l1->next;
+                a = st1.top();
+                st1.pop();
+            }
+            if(!st2.empty())
+            {
+                b = st2.top();
+                st2.pop();
+            }
+            
+            int sum = (a + b + ptr->val);
+            
+            ptr->val = sum % 10;
                 
-            }
-            if(l2)
-            {
-                sum += l2->val;
-                l2 = l2->next;
-            }
+            ListNode* cur = new ListNode(sum/10);
             
-           
-            carry = sum/10;
+            cur->next = ptr;
             
-            ListNode* cur = new ListNode(sum % 10);
-            
-            ptr->next = cur;
-            ptr = ptr->next;
+            ptr = cur;
         }
         
-        if(carry)
-        {
-            ListNode* cur = new ListNode(carry);
-            
-            ptr->next = cur;
-            ptr = ptr->next;
-        }
-        
-        ListNode* ans = reverseList(dummy->next);
-        
-        return ans;
-        
+        return (ptr->val == 0 ? ptr->next : ptr);
     }
 };
