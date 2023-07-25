@@ -4,13 +4,19 @@ public:
         
         int n = arr.size();
         
-        for(int i = 1; i < n-1; ++i)
+        int start = 0, end = n-1;
+        
+        while(start <= end)
         {
-            if(arr[i] > arr[i-1] and arr[i] > arr[i+1])
-                return i;
+            int mid = (start + end) >> 1;
+            
+            if(arr[mid] < arr[mid+1])
+                start = mid+1;
+            else
+                end = mid-1;
         }
         
-        return -1;
+        return start;
         
     }
 };
