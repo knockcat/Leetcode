@@ -23,7 +23,10 @@ public:
                 if(st.find(temp) != st.end())
                 {
                     if(i > 0)
-                        dp[j] =  ((dp[j] % mod + dp[i-1]) % mod) % mod;
+                    {
+                        if(!dp[j])
+                            dp[j] = dp[i-1];
+                    }
                     else
                         dp[j] = 1;
                 }
