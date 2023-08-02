@@ -1,24 +1,19 @@
 class Solution {
 
 private:
-    void helper(vector<int>& ds,  vector<int>& freq, vector<int>& nums, vector<vector<int>>& ans)
+    void helper(int idx, vector<int>& nums, vector<vector<int>>& ans)
     {
-        if(ds.size() == nums.size())
+        if(idx == nums.size())
         {
-            ans.push_back(ds);
+            ans.push_back(nums);
             return;
         }
         
-        for(int i = 0; i < nums.size(); ++i)
+        for(int i = idx; i < nums.size(); ++i)
         {
-            if(!freq[i])
-            {
-                ds.push_back(nums[i]);
-                freq[i] = 1;
-                helper(ds, freq, nums, ans);
-                freq[i] = 0;
-                ds.pop_back();
-            }
+            swap(nums[idx], nums[i]);
+            helper(idx+1, nums, ans);
+            swap(nums[idx], nums[i]);
         }
     }
     
@@ -27,9 +22,7 @@ public:
      
         vector<vector<int>> ans;
         
-        vector<int> freq(nums.size(),0), ds;
-        
-        helper(ds, freq, nums, ans);
+        helper(0, nums, ans);
         
         return ans;
         
