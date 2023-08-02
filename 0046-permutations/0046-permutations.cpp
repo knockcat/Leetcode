@@ -1,7 +1,7 @@
 class Solution {
 
 private:
-    void helper(int idx,  vector<int>& ds,  vector<int>& freq, vector<int>& nums, vector<vector<int>>& ans)
+    void helper(vector<int>& ds,  vector<int>& freq, vector<int>& nums, vector<vector<int>>& ans)
     {
         if(ds.size() == nums.size())
         {
@@ -15,7 +15,7 @@ private:
             {
                 ds.push_back(nums[i]);
                 freq[i] = 1;
-                helper(i+1, ds, freq, nums, ans);
+                helper(ds, freq, nums, ans);
                 freq[i] = 0;
                 ds.pop_back();
             }
@@ -29,7 +29,7 @@ public:
         
         vector<int> freq(nums.size(),0), ds;
         
-        helper(0, ds, freq, nums, ans);
+        helper(ds, freq, nums, ans);
         
         return ans;
         
