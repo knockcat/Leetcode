@@ -1,27 +1,4 @@
 class Solution {
-    
-private:
-    bool helper(int idx, int n, string& s, unordered_set<string>& used, vector<int>& dp)
-    {
-        if(idx == n)
-            return true;
-        
-        if(dp[idx] != -1)
-            return dp[idx];
-        
-        string temp;
-        for(int i = idx; i < n; ++i)
-        {
-            temp += s[i];
-            
-            if(used.find(temp) != used.end())
-            {
-                if(helper(i+1, n, s, used, dp))
-                    return dp[idx] = true;
-            }
-        }
-        return dp[idx] = false;
-    }
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         
@@ -29,9 +6,28 @@ public:
         
         int n = s.size();
         
-        vector<int> dp(n+1, -1);
+        vector<int> dp(n+1, 0);
         
-        return helper(0, n, s, used, dp);
-        
+        for(int i = 0; i < n; ++i)
+        {
+            string temp;
+            for(int j = i; j < n; ++j)
+            {
+                temp += s[j];
+                
+                if(used.find(temp) != used.end())
+                {
+                    if(i > 0)
+                    {
+                        if(dp[i-1])
+                            dp[j] = 1;
+                    }
+                    else
+                        dp[j] = 1;
+                }
+            }
+        }     
+    
+        return dp[n-1];
     }
 };
