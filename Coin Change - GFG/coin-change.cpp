@@ -13,14 +13,14 @@ class Solution {
         
         for(int i = 0; i <= sum; ++i)
         {
-            dp[0][i] = (i % coins[0] == 0);
+            dp[N-1][i] = (i % coins[N-1] == 0);
         }
         
-        for(int i = 1; i < N; ++i)
+        for(int i = N-2; i >= 0; --i)
         {
             for(int j = 0; j <= sum; ++j)
             {
-                long long int notTake = dp[i-1][j];
+                long long int notTake = dp[i+1][j];
                 long long int take = 0;
                 
                 if(coins[i] <= j)
@@ -30,7 +30,7 @@ class Solution {
             }
         }
         
-        return dp[N-1][sum];
+        return dp[0][sum];
     }
 };
 
