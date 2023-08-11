@@ -2,12 +2,11 @@ class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         
-        set<vector<int>> s;
+        int n = nums.size();
+        
         vector<vector<int>> ans;
         
-        sort(nums.begin(),nums.end());
-        
-        int n = nums.size();
+        sort(nums.begin(), nums.end());
         
         for(int i = 0; i < n; ++i)
         {
@@ -16,20 +15,26 @@ public:
             while(j < k)
             {
                 int sum = nums[i] + nums[j] + nums[k];
-                if((sum) == 0)
+                
+                if(sum == 0)
                 {
-                    s.insert({nums[i],nums[j],nums[k]});
-                    ++j,--k;
+                    ans.push_back({nums[i],nums[j],nums[k]});
+                    ++j, --k;
                 }
-                else if(sum < 0)
-                    ++j;
-                else
+                else if(sum > 0)
+                {
                     --k;
+                }
+                else
+                {
+                    ++j;
+                }
             }
         }
         
-        for(auto itr : s)
-            ans.push_back(itr);
+        sort(ans.begin(), ans.end());
+        
+        ans.erase(unique(ans.begin(),ans.end()), ans.end());
         
         return ans;
     }
