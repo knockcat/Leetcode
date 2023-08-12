@@ -4,7 +4,7 @@ public:
         
         int n = matrix.size(), m = matrix[0].size();
         
-        vector<vector<int>> dp(n, vector<int>(m, 0));
+        vector<int> curr(m, 0), prev(m , 0);
         
         int ans = 0;
         
@@ -13,18 +13,20 @@ public:
             for(int j = 0; j < m; ++j)
             {
                 if(i == 0 or j == 0)
-                    dp[i][j] = matrix[i][j] - 48;
+                    curr[j] = matrix[i][j] - 48;
                 
                 if(i > 0 and j > 0 and matrix[i][j] != '0')
                 {
-                    int leftDiagonal = dp[i-1][j-1];
-                    int bottomLeft = dp[i][j-1];
-                    int topRight = dp[i-1][j];
+                    int leftDiagonal = prev[j-1];
+                    int bottomLeft = curr[j-1];
+                    int topRight = prev[j];
                     
-                    dp[i][j] = min({leftDiagonal, bottomLeft, topRight}) + 1;
+                    curr[j] = min({leftDiagonal, bottomLeft, topRight}) + 1;
                 }
-                ans = max(ans,dp[i][j]);
+                ans = max(ans,curr[j]);
             }
+            fill(prev.begin(),prev.end(),0);
+            swap(prev,curr);
         }
         
         return ans * ans;
