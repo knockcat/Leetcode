@@ -24,7 +24,7 @@ public:
         
         int n = matrix.size(), m = matrix[0].size();
         
-        vector<vector<int>> dp(n, vector<int>(m, -1));
+        vector<vector<int>> dp(n, vector<int>(m, 0));
         
         int squareSubmatrices = 0;
         
@@ -32,7 +32,19 @@ public:
         {
             for(int j = 0; j < m; ++j)
             {
-                squareSubmatrices += helper(i, j, n, m,  matrix, dp);
+                if(i == 0 or j == 0)
+                    dp[i][j] = matrix[i][j];
+                
+                if(i > 0 and j > 0 and matrix[i][j] != 0)
+                {
+                    int leftDiag = dp[i-1][j-1];
+                    int left = dp[i][j-1];
+                    int top = dp[i-1][j];
+                    
+                    dp[i][j] = min({leftDiag, left,  top}) + 1;
+                }
+                
+                squareSubmatrices += dp[i][j];
             }
         }
         
