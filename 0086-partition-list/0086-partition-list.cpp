@@ -21,12 +21,12 @@ public:
         {
             if(dummy->val < x)
             {
-                left->next = new ListNode(dummy->val);
+                left->next = dummy;
                 left = left->next;
             }
             else
             {
-                right->next = new ListNode(dummy->val);
+                right->next = dummy;
                 right = right->next;
             }
             
