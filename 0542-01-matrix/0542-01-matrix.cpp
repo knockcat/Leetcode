@@ -2,13 +2,13 @@ class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
         
-        int n = mat.size();
-        int m = mat[0].size();
+        int n = mat.size(), m = mat[0].size();
         
-        vector<vector<bool>> visited(n,vector<bool>(m,false));
-        vector<vector<int>> dist(n,vector<int>(m,0));
+        queue<pair<int, pair<int,int>>> q;
         
-        queue<pair<pair<int,int>, int> > q;
+        vector<vector<int>> dist(n, vector<int>(m));
+        
+        vector<vector<bool>> visited(n, vector<bool>(m, false));
         
         for(int i = 0; i < n; ++i)
         {
@@ -16,34 +16,39 @@ public:
             {
                 if(mat[i][j] == 0)
                 {
-                    q.push({{i,j}, 0});
+                    dist[i][j] = 0;
+                    q.push({0,{i,j}});
                     visited[i][j] = true;
                 }
             }
         }
         
+        vector<int> dx = {-1, 0, 0, +1};
+        vector<int> dy = {0, -1, +1, 0};
+        
         while(!q.empty())
         {
-            int currRow = q.front().first.first;
-            int currCol = q.front().first.second;
-            int steps = q.front().second;
-            
+            auto curr = q.front();
             q.pop();
             
-            dist[currRow][currCol] = steps;
+            int curDist = curr.first;
+            int x = curr.second.first;
+            int y = curr.second.second;
             
-            vector<int> rows = {-1, 0, 0, +1};
-            vector<int> cols = {0, -1, +1, 0};
+            if(mat[x][y] == 1)
+            {
+                dist[x][y] = curDist;
+            }
             
             for(int i = 0; i < 4; ++i)
             {
-                int newRow = currRow + rows[i];
-                int newCol = currCol + cols[i];
+                int newX = dx[i] + x;
+                int newY = dy[i] + y;
                 
-                if(newRow >= 0 and newRow < n and newCol >= 0 and newCol < m and !visited[newRow][newCol])
+                if(newX >= 0 and newY >= 0 and newX < n and newY < m and !visited[newX][newY])
                 {
-                    q.push({{newRow,newCol}, steps + 1});
-                    visited[newRow][newCol] = true;
+                    q.push({curDist + 1,  {newX, newY}});
+                    visited[newX][newY] = true;
                 }
             }
         }
