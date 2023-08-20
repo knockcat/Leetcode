@@ -37,7 +37,9 @@ private:
             }
         }
         
-        return topo;
+        if(topo.size() == n)    
+            return topo;
+        return {};
     }
     
 public:
@@ -90,8 +92,6 @@ public:
             ans.insert(ans.end(), groupToItemOrder[group].begin(), groupToItemOrder[group].end());
         }
         
-        if(ans.size() == n)
-            return ans;
-        return {};
+        return ans;
     }
 };
