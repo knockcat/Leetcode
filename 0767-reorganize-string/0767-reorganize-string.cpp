@@ -1,51 +1,54 @@
 class Solution {
 public:
     string reorganizeString(string s) {
-     
-        priority_queue<pair<int,char> > pq;
         
-        unordered_map<char, int> mp;
+        int n = s.size();
         
-        string ans;
+        vector<int> freq(26, 0);
         
-        for(auto& itr : s)
-            ++mp[itr];
+        int maxFreq = 0;
         
-        for(auto itr : mp)
-            pq.push({itr.second, itr.first});
+        char maxFreqCharacter;
         
-        while(!pq.empty())
-        { 
-            pair<int, char> curr1 = {-1, ' '}, curr2 = {-1, ' '};
+        for(auto& ch : s)
+        {
+            ++freq[ch - 'a'];
             
-            if(!pq.empty())
-            {
-                curr1 = pq.top();
-                pq.pop();
-            }
-            
-            if(!pq.empty())
-            {
-                curr2 = pq.top();
-                pq.pop();
-            }
-            
-            if(curr2.first == -1 and curr1.first > 1)
+            if(freq[ch-'a'] > (n+1)/2)
                 return "";
             
-            ans += curr1.second;
+            if(freq[ch-'a'] > maxFreq)
+            {
+                maxFreq = freq[ch-'a'];
+                maxFreqCharacter = ch;
+            }
+        }
+        
+        int i = 0;
+        
+        string ans(n,' ');
+        
+        while(freq[maxFreqCharacter - 'a'] > 0)
+        {
+            ans[i] = maxFreqCharacter;
             
-            if(curr2.first != -1)
-                ans += curr2.second;
+            --freq[maxFreqCharacter - 'a'];
             
-            --curr2.first;
-            --curr1.first;
-            
-            if(curr1.first > 0)
-                pq.push(curr1);
-            
-            if(curr2.first > 0)
-                pq.push(curr2);
+            i += 2;
+        }
+        
+        for(char ch = 'a'; ch <= 'z'; ++ch)
+        {
+            while(freq[ch - 'a'] > 0)
+            {
+                if(i >= n)
+                    i = 1;
+                
+                ans[i] = ch;
+                
+                --freq[ch - 'a'];
+                i += 2;
+            }
         }
         
         return ans;
