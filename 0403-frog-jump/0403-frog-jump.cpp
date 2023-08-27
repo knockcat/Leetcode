@@ -9,33 +9,21 @@ private:
         if(idx >= n)
             return 0;
         
-        bool first = false, second = false, third = false;
+        bool result = false;
         
         if(dp.find({idx, canJump}) != dp.end())
             return dp[{idx, canJump}];
-      
-        int maxJump = canJump + 1;
-        int minJump = canJump - 1;
-        
-        for(int i = idx+1; i < n; ++i)      
-        {      
+     
+        for(int jump = -1; jump <= 1; ++jump)
+        {
+            int jumpIdx = lower_bound(stones.begin(), stones.end(), stones[idx] + canJump + jump) - stones.begin();
             
-            if(stones[idx] + maxJump == stones[i])
-            {
-                first |= helper(i, n, maxJump, stones, dp);
-            }
-
-            if(stones[idx] + minJump == stones[i])
-            {
-                second |= helper(i, n, minJump, stones, dp);
-            }
-
-            if(stones[idx] + canJump == stones[i])
-            {
-                third |= helper(i, n, canJump, stones, dp);
-            }
+            if(jumpIdx > idx and jumpIdx < n and stones[idx] + canJump + jump == stones[jumpIdx])
+                result |= helper(jumpIdx, n, canJump + jump, stones, dp);
         }
-        return dp[{idx, canJump}] = first or second or third;
+        
+       
+       return dp[{idx, canJump}] = result;
     }
 public:
     bool canCross(vector<int>& stones) {
@@ -44,7 +32,6 @@ public:
         
         map<pair<int,int>, int> dp;
         
-        return helper(0, n, 0, stones, dp);
-        
+        return helper(0, n, 0, stones, dp);  
     }
 };
