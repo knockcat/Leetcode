@@ -1,34 +1,44 @@
 class Solution {
+
+private:
+    int helper(int idx, int maxEnd, int n, vector<pair<int,int> >& startEnd, map<pair<int, int>,int>& dp)
+    {
+        if(idx == startEnd.size())
+            return (maxEnd >= n ? 0 : 1e9);
+        
+        if(dp.find({idx, maxEnd}) != dp.end())
+            return dp[{idx, maxEnd}];
+        
+        if(maxEnd < startEnd[idx].first)
+            return 1e9;
+        
+        int notTake = helper(idx+1, maxEnd, n, startEnd, dp);
+       
+        int take = 1 + helper(idx+1, max(maxEnd,startEnd[idx].second), n, startEnd , dp);
+
+        return dp[{idx, maxEnd}] = min(take, notTake);
+    }
+    
 public:
     int minTaps(int n, vector<int>& ranges) {
         
-        vector<int> startEnd(n+1, 0);
+        vector<pair<int,int> > startEnd;
         
         for(int i = 0; i < ranges.size(); ++i)
         {
             int start = max(0, i - ranges[i]);
             int end = min(n, i + ranges[i]);
             
-            startEnd[start] = max(startEnd[start], end);
+            startEnd.push_back({start, end});
         }
         
-        int taps = 0, maxEnd = 0, currEnd = 0;
+        sort(startEnd.begin(), startEnd.end());
         
-        for(int i = 0; i <= n; ++i)
-        {
-            if(i > maxEnd)
-                return -1;
-            
-            if(i > currEnd)
-            {
-                ++taps;
-                currEnd = maxEnd;
-            }
-            
-            maxEnd = max(maxEnd, startEnd[i]);
-        }
+        map<pair<int,int>,int> dp;
         
-        return taps;
+        int ans = helper(0, 0, n, startEnd, dp);
+        
+        return (ans == 1e9 ? -1 : ans);
         
     }
 };
