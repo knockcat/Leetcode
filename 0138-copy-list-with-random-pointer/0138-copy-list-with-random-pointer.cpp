@@ -18,26 +18,40 @@ class Solution {
 public:
     Node* copyRandomList(Node* head) {
         
-        unordered_map<Node*, Node*> mp;
+        if(!head)
+            return nullptr;
         
-        Node* temp = head;
+        Node*temp = head;
         
         while(temp)
         {
             Node* newNode = new Node(temp->val);
-            mp.insert({temp, newNode});
-            temp = temp->next;
+            newNode->next = temp->next;
+            temp->next = newNode;
+            temp = newNode->next;
         }
         
         temp = head;
         
         while(temp)
         {
-            mp[temp]->random = (temp->random ? mp[temp->random] : nullptr);
-            mp[temp]->next = (temp->next ? mp[temp->next] : nullptr);
-            temp = temp->next;
+            temp->next->random = (temp->random ? temp->random->next : nullptr);
+            temp = temp->next->next;
         }
         
-        return mp[head];
+        temp = head;
+        Node* ans = temp->next, *ptr = temp->next;
+        
+        while(temp)
+        {
+            temp->next = ptr->next;
+            temp = temp->next;
+            if(!temp)
+                break;
+            ptr->next = temp->next;
+            ptr = ptr->next;
+        }
+        
+        return ans;
     }
 };
