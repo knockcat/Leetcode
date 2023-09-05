@@ -20,34 +20,36 @@ public:
 */
 
 class Solution {
-public:
-    
-    Node* clone(Node* node, unordered_map<int,Node*>& mp)
+
+private:
+    Node* clone(Node* node, unordered_map<int, Node*>& mp)
     {
         Node* newNode = new Node(node->val);
-        mp.insert({node->val,newNode});
+        mp.insert({node->val, newNode});
         
-        for(auto itr : node->neighbors)
+        for(auto& itr : node->neighbors)
         {
             if(mp.find(itr->val) == mp.end())
             {
-                Node* cn = clone(itr,mp);
-                newNode->neighbors.push_back(cn);
+                Node* cloneNode = clone(itr, mp);
+                newNode->neighbors.push_back(cloneNode);
             }
             else
+            {
                 newNode->neighbors.push_back(mp[itr->val]);
+            }
         }
         
         return newNode;
     }
     
-    
+public:
     Node* cloneGraph(Node* node) {
         
-        if(node == nullptr)
+        if(!node)
             return nullptr;
         
-        unordered_map<int,Node*> mp;
+        unordered_map<int, Node*> mp;
         
         return clone(node, mp);
         
