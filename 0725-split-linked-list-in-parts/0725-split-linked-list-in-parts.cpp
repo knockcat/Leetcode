@@ -12,81 +12,43 @@ class Solution {
 public:
     vector<ListNode*> splitListToParts(ListNode* head, int k) {
         
-        vector<ListNode*> ans(k, nullptr);
+        vector<ListNode*> result(k, nullptr);
         
         if(!head)
-            return ans;
+            return result;
         
-        ListNode* temp = head;
+        int length = 0;
         
-        int counter = 0 ;
+        ListNode* curr = head;
         
-        while(temp)
+        while(curr)
         {
-            ++counter;
-            temp = temp->next;
+            ++length;
+            curr = curr->next;
         }
         
-        int part = counter / k, extra = counter % k;
+        int eachPartitionLength = length / k;
+        int extraNodes = length % k;
         
-        int idx = 0;
+        curr = head;
         
-        temp = head;
+        ListNode* prev = nullptr;
         
-        ListNode* prev = temp, *nextNode = nullptr;
-        
-        
-        if(k >= counter)
+        for(int i = 0; i < k; ++i)
         {
-            while(temp)
+            result[i] = curr;
+            
+            for(int count = 1; count <= eachPartitionLength + (extraNodes > 0 ? 1 : 0); ++count)
             {
-               temp = temp->next;
-               prev->next = nullptr;
-               ans[idx++] = prev;
-               prev = temp;
+                prev = curr;
+                curr = curr->next;
             }
             
-            return ans;
+            prev->next = nullptr;
+            --extraNodes;
         }
         
-        counter = 1;
+        return result;
         
-        while(temp)
-        {
-            if(counter == part)
-            {
-                if(extra)
-                {
-                    nextNode = temp->next->next;
-                    
-                    temp->next->next = nullptr;
-                    
-                    --extra;
-                }
-                else
-                {
-                    nextNode = temp->next;
-                    
-                    temp->next = nullptr;
-                }
-                
-                ans[idx++] = prev;
-                    
-                prev = temp = nextNode;
-                    
-                counter = 1;
-                
-                continue;
-            }
-            
-            ++counter;
-            temp = temp->next;
-            cout<<temp->val<<' ';
-        }
-        
-        if(counter > 1)
-            ans[idx++] = prev;
-     
-        return ans;
     }
 };
