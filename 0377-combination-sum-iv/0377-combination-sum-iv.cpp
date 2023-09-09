@@ -1,36 +1,33 @@
 class Solution {
-
-private:
-    int helper(int sum, vector<int>& nums, int target, vector<int>& dp)
-    {
-       if(sum > target)
-           return 0;
-        
-       if(sum == target)
-           return 1;
-        
-        if(dp[sum] != -1)
-            return dp[sum];
-        
-        int ways = 0;
-        
-        for(int i = 0; i < nums.size(); ++i)
-        {
-            if(nums[i] + sum <= target)
-            {
-                ways += helper(sum + nums[i], nums, target, dp);
-            }
-        }
-      
-        return dp[sum] = ways;
-    }
     
+private:
+    int helper(int idx, int sum, vector<int>& nums, int target, vector<vector<int>>& dp)
+    {
+        if(idx == nums.size())
+        {
+            return sum == target;
+        }
+        
+        if(dp[idx][sum] != -1)
+            return dp[idx][sum];
+        
+        int notTake = helper(idx+1, sum, nums, target, dp);
+        
+        int take = 0;
+        
+        if(sum + nums[idx] <= target)
+            take = helper(0, sum + nums[idx], nums, target, dp);
+        
+        return dp[idx][sum] = take + notTake;
+    }
 public:
     int combinationSum4(vector<int>& nums, int target) {
         
-        vector<int> dp(target+1, -1);
+        int n = nums.size();
         
-        return helper(0, nums, target, dp);
+        vector<vector<int>> dp(n+1, vector<int>(target+1, -1));
+        
+        return helper(0, 0, nums, target, dp);
         
     }
 };
