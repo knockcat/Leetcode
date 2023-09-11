@@ -10,26 +10,14 @@ public:
         
         for(int i = 0; i < n; ++i)
         {
-            if(mp.find(groupSizes[i]) == mp.end())
+            mp[groupSizes[i]].push_back(i);
+            
+            if(mp[groupSizes[i]].size() == groupSizes[i] )
             {
-                mp[groupSizes[i]].push_back(i);
+                ans.push_back(mp[groupSizes[i]]);
+                mp[groupSizes[i]].clear();
             }
-            else
-            {
-                if(mp[groupSizes[i]].size() == groupSizes[i] )
-                {
-                    ans.push_back(mp[groupSizes[i]]);
-                    mp.erase(groupSizes[i]);
-                }
-               
-                mp[groupSizes[i]].push_back(i);
-            }
-        }
-        
-        for(auto& itr : mp)
-        {
-            ans.push_back(itr.second);
-        }
+        }    
         
         return ans;
     }
