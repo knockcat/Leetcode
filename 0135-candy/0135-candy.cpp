@@ -4,28 +4,45 @@ public:
         
         int n = ratings.size();
         
-        int total = 0;
+        int candies = n;
         
-        vector<int> left(n, 1), right(n, 1);
+        int i = 1;
         
-        for(int i = 1; i < n; ++i)
-        {
-            if(ratings[i] > ratings[i-1])
-                left[i] = left[i-1] + 1;
-        }
-        
-        for(int i = n-2; i >= 0; --i)
-        {
-            if(ratings[i] > ratings[i+1])
+        while(i < n)
+        {   
+            if(ratings[i] == ratings[i-1])
             {
-                right[i] = right[i+1] + 1;
+                ++i;
+                continue;
             }
+            
+            int peak = 0;
+            
+            while(ratings[i] > ratings[i-1])
+            {
+                
+                ++peak;
+                candies += peak;
+                
+                ++i;
+                
+                if(i == n)
+                    return candies;
+            }
+            
+            int dip = 0;
+            
+            while(i < n and ratings[i] < ratings[i-1])
+            {
+                ++dip;
+                candies += dip;
+                
+                ++i;
+            }
+            
+            candies -= min(peak, dip);
         }
         
-        for(int i = 0; i < n; ++i)
-            total += max(left[i], right[i]);
-        
-        return total;
-        
+        return candies;
     }
 };
