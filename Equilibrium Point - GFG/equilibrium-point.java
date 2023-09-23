@@ -42,17 +42,21 @@ class Solution {
 
         // Your code here
         
-        long[] pref = new long[n];
+        int totalSum = 0 ;
         
-        pref[0] = arr[0];
-        
-        for(int i = 1; i < n; ++i)
-            pref[i] = arr[i] + pref[i-1];
+        for(int i = 0; i < n; ++i)
+            totalSum += arr[i];
+            
+        int currSum = 0 ;    
             
         for(int i = 0; i < n; ++i)
         {
-            long left = (i == 0 ? 0 : pref[i-1]);
-            long right = (i == n-1) ? 0 : pref[n-1] - pref[i];
+            currSum += arr[i];
+            
+            long left = (i == 0 ? 0 : currSum - arr[i]);
+            long right = (i == n-1 ? 0 : totalSum - currSum);
+            
+            // System.out.println(left + " " + right);
             
             if(left == right)
                 return i+1;
