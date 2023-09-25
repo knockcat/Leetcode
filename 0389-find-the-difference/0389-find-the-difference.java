@@ -1,19 +1,14 @@
 class Solution {
     public char findTheDifference(String s, String t) {
         
-        char[] sChar = s.toCharArray();
-        char[] tChar = t.toCharArray();
+        char ch = 0;
         
-        Arrays.sort(sChar);
-        Arrays.sort(tChar);
+        for(char c : s.toCharArray())
+            ch ^= c;
         
-        for(int i = 0; i < sChar.length; ++i)
-        {
-            if(sChar[i] != tChar[i])
-                return tChar[i];
-        }
+        for(char c : t.toCharArray())
+            ch ^= c;
         
-        return tChar[tChar.length-1];
-        
+        return ch;
     }
 }
