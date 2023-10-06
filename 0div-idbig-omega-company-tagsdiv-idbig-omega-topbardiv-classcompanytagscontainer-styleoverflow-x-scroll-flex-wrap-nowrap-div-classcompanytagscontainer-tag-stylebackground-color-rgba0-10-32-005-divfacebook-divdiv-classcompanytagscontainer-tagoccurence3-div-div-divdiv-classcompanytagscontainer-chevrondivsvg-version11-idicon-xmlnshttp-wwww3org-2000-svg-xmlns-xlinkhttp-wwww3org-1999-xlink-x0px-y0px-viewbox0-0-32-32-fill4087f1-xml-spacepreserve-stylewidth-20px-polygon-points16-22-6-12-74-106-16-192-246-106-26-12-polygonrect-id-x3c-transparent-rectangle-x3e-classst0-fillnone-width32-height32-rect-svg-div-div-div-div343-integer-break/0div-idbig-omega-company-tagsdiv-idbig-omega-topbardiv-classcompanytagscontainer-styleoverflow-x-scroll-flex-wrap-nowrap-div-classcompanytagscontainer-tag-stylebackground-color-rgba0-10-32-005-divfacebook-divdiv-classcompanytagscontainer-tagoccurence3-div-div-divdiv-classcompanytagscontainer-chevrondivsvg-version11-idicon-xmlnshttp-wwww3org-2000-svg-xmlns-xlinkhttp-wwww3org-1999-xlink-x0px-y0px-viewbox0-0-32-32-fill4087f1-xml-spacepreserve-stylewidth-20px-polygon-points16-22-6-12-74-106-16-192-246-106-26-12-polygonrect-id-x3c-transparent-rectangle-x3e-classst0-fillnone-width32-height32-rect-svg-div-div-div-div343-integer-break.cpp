@@ -1,24 +1,29 @@
 class Solution {
 public:
     
-    int helper(int idx, int sum, int n)
+    int helper(int n, vector<int>& dp)
     {
-        if(sum == 0)
-           return 1;
+        if(n == 1)
+            return 1;
         
-        if(sum < 0 or idx >= n)
-            return 0;
+        if(dp[n] != -1)
+            return dp[n];
         
-        int res = helper(idx+1, sum, n);
+        int res = 1;
         
-        res = max(res, idx * helper(idx, sum-idx, n));
+        for(int i = 1; i <= n-1; ++i)
+        {
+            int prod = i * max(n - i, helper(n-i, dp));
+            res = max(res, prod);
+        }
         
-        return res;
+        return dp[n] = res;
     }
     
     int integerBreak(int n) {
         
-        return helper(1, n, n);
+        vector<int> dp(n+1, -1);
         
+        return helper(n, dp);
     }
 };
