@@ -90,7 +90,7 @@ public:
                 if(dsu.findParent(i) == dsu.findParent(leftChild[i]))
                    return false;
                 else
-                   dsu.unionBySize(i, leftChild[i]);
+                   dsu.unionByRank(i, leftChild[i]);
             }
             
             if(rightChild[i] != -1)
@@ -98,7 +98,7 @@ public:
                 if(dsu.findParent(i) == dsu.findParent(rightChild[i]))
                    return false;
                 else
-                    dsu.unionBySize(i, rightChild[i]);
+                    dsu.unionByRank(i, rightChild[i]);
             }
         }
         
