@@ -22,7 +22,7 @@ public:
     vector<int> v;
     int k = 0;
       
-    void helper(vector<NestedInteger> nestedList)
+    void helper(vector<NestedInteger>& nestedList)
     {
         for(auto& itr : nestedList)
         {
