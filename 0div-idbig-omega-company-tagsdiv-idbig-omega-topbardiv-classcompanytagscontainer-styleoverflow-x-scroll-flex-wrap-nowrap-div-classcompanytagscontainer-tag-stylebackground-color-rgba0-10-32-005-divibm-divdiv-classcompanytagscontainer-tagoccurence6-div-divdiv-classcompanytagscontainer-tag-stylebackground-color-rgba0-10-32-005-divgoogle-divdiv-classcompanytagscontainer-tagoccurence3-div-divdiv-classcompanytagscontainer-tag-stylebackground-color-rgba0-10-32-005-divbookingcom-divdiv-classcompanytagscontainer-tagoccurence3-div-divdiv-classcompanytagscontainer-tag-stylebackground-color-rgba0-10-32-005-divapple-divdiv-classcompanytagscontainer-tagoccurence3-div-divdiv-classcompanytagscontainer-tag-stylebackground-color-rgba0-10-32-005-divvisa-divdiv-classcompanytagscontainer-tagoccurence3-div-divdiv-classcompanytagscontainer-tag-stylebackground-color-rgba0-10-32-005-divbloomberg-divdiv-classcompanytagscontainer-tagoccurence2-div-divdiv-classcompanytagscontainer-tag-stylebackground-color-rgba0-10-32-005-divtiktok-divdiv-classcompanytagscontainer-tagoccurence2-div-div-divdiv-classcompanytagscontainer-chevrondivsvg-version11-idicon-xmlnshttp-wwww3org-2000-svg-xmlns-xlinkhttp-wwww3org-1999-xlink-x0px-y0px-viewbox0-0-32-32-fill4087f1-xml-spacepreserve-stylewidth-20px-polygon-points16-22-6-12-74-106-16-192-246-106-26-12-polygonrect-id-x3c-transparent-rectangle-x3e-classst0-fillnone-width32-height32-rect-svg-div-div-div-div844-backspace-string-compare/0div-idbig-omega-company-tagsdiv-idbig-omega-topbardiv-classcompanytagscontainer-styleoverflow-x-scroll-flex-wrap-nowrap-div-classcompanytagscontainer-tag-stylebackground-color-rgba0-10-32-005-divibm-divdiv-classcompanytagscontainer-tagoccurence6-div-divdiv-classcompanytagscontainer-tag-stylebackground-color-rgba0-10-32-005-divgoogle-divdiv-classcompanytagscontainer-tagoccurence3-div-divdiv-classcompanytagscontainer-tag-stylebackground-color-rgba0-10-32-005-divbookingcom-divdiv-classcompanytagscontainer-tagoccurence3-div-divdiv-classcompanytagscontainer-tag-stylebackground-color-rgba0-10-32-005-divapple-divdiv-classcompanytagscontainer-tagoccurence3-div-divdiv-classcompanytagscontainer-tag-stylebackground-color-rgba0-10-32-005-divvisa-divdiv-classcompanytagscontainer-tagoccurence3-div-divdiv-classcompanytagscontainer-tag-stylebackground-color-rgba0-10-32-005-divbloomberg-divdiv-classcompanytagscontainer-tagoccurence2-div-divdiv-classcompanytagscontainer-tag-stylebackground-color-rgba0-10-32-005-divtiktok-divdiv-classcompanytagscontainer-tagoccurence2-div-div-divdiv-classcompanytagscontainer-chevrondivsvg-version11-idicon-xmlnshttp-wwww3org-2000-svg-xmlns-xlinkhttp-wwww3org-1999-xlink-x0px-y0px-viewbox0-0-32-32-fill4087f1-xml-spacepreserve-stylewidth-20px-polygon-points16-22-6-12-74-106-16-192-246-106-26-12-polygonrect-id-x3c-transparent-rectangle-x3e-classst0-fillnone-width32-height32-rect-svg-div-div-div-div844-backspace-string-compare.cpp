@@ -1,43 +1,30 @@
 class Solution {
 public:
-    bool backspaceCompare(string s, string t) {
-        
-        int p(0), q(0);
-
-        int n = s.size(), m = t.size();
+    
+    string solve(string& str, int n)
+    {
+        int k = 0;
         
         for(int i = 0; i < n; ++i)
         {
-            if(s[i] == '#')
+            if(str[i] == '#')
             {
-                p = max(0, --p);
+                k = max(0, --k);
             }
             else
             {
-                s[p++] = s[i];
+                str[k++] = str[i];
             }
         }
         
-        for(int i = 0; i < m; ++i)
-        {
-            if(t[i] == '#')
-            {
-                q = max(0, --q);
-            }
-            else
-            {
-                t[q++] = t[i];
-            }
-        }
+        return str.substr(0, k);
+    }
+    
+    bool backspaceCompare(string s, string t) {
+
+        int n = s.size(), m = t.size();
         
-        if(p != q)  return false;
+        return (solve(s, n) == solve(t, m));
         
-        for(int i = 0; i < p; ++i)
-        {
-            if(s[i] != t[i])
-                return false;
-        }
-        
-        return true;
     }
 };
