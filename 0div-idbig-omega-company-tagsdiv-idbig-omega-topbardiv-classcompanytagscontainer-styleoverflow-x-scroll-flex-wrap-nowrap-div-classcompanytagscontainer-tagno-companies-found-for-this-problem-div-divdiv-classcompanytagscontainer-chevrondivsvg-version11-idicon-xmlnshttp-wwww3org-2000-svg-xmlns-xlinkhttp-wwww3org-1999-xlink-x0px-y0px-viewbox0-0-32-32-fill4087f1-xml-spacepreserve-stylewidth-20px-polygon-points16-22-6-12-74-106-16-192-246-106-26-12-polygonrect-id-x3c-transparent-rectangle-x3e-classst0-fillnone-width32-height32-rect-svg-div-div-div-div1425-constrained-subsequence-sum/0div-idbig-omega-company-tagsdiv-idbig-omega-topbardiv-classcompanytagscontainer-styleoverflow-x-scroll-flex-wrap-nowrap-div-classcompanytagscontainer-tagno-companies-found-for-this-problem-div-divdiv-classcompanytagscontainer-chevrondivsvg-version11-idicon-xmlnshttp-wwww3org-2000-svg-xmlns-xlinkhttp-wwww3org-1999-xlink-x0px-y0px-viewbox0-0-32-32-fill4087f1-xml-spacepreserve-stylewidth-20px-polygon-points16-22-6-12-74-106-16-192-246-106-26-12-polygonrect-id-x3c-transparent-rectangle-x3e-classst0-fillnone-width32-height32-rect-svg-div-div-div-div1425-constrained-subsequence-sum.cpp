@@ -4,31 +4,28 @@ public:
         
         int n = nums.size();
         
-        vector<int> dp(n+1);
+        vector<int> dp(nums);
+    
+        deque<int> dq;
+        
+        int ans = dp[0];
         
         for(int i = 0; i < n; ++i)
-            dp[i] = nums[i];
-        
-        priority_queue<pair<int,int>> pq;
-        
-        int ans = *max_element(begin(nums), end(nums));
-        
-        pq.push({nums[0], 0});
-        
-        for(int i = 1; i < n; ++i)
         {
-            while(!pq.empty() and i - pq.top().second > k)
-                pq.pop();
+            while(!dq.empty() and i - dq.front() > k)
+                dq.pop_front();
             
-            dp[i] = max(dp[i], nums[i] + pq.top().first);
+            if(!dq.empty())
+                dp[i] = max(dp[i], nums[i] + dp[dq.front()]);
+            
+            while(!dq.empty() and dp[i] >= dp[dq.back()])
+                dq.pop_back();
+                        
+            dq.push_back(i);
             
             ans = max(ans, dp[i]);
-            
-            pq.push({dp[i], i});
         }
         
         return ans;
     }
 };
-
- 
