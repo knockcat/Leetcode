@@ -2,13 +2,13 @@ class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         
-        int i = 0, j = 0;
-        
         int n = nums.size();
         
-        vector<int> ans;
+        int i = 0, j = 0;
         
         list<int> l;
+        
+        vector<int> ans;
         
         while(j < n)
         {
@@ -22,9 +22,7 @@ public:
                 ans.push_back(nums[l.front()]);
                 
                 if(l.front() == i)
-                {
                     l.pop_front();
-                }
                 
                 ++i;
             }
@@ -33,6 +31,5 @@ public:
         }
         
         return ans;
-        
     }
 };
