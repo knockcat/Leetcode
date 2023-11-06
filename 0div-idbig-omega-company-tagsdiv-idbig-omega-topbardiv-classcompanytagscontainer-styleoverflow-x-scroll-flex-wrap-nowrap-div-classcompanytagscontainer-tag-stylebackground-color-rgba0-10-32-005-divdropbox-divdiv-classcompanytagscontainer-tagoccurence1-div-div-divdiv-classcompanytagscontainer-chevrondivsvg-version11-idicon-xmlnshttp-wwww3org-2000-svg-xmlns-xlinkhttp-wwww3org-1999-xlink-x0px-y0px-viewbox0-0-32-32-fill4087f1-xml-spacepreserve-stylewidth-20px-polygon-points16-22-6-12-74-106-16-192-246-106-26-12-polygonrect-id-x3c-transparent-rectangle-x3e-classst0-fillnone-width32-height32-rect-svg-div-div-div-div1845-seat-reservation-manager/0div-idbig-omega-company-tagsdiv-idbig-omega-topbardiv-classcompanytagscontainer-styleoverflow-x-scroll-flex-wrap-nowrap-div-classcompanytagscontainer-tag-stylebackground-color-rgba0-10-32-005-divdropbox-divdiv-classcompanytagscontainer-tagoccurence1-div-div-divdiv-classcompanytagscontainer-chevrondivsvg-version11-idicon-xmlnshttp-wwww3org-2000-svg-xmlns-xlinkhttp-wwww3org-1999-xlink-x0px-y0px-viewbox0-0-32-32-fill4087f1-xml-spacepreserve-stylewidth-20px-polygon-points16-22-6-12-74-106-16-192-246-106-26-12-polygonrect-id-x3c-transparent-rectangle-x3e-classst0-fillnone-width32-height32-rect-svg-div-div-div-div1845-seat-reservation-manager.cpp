@@ -2,13 +2,11 @@ class SeatManager {
 public:
     
     set<int> st;
-    vector<int> seat;
     int counter = 1;
     int N;
     
     SeatManager(int n) {
-        N = n;
-        seat.resize(n+1, 0);    
+        N = n;  
     }
     
     int reserve() {
@@ -17,13 +15,11 @@ public:
         {
             int least = *st.begin();
             st.erase(*st.begin());
-            seat[least] = 1;
             return least;
         }
         
         if(counter <= N)
         {
-            seat[counter] = 1;
             int smallestUnreserved = counter;
             ++counter;
             return smallestUnreserved;
@@ -34,7 +30,6 @@ public:
     
     void unreserve(int seatNumber) {
         st.insert(seatNumber);
-        seat[seatNumber] = 0;
     }
 };
 
