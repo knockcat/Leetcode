@@ -2,41 +2,20 @@ class Solution {
 public:
     int countHomogenous(string s) {
         
-        int n = s.size();
+        int n = s.size(), cnt = 0, prev = 0, res = 0;
         
         const int mod = 1e9 + 7;
         
-        long long cnt = 1;
-        
-        long long ans = 0;
-        
-        for(int i = 1; i < n; ++i)
+        for(auto& itr : s)
         {
-            if(s[i] == s[i-1])
-            {
-                ++cnt;
-            }
+            cnt = (itr == prev ? cnt+1 : 1);
             
-            else
-            {
-                int curr = ((cnt * 1LL* (cnt+1))/2) % mod;
-                
-                ans = (ans + curr) % mod;
-                
-                cnt = 1;
-            }
+            prev = itr;
+            
+            res = (res + cnt) % mod;
         }
         
-        if(cnt)
-        {
-            long long curr = ((cnt * 1LL *(cnt+1))/2)%mod ;
-                
-            ans = (ans + curr) % mod;
-                
-            cnt = 1;
-        }
-        
-        return ans;
+        return res;
         
     }
 };
