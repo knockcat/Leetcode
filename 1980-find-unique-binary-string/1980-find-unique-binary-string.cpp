@@ -1,30 +1,14 @@
 class Solution {
 public:
-    
-    string ans;
-    
-    void helper(int n, string curr, unordered_set<string>& st)
-    {
-        if(curr.size() == n)
-        {
-            if(!st.count(curr))
-                ans = curr;
-            return;
-        }
-        curr += '0';
-        helper(n, curr, st);
-        curr.pop_back();
-        curr += '1';
-        helper(n, curr, st);
-    }
-    
     string findDifferentBinaryString(vector<string>& nums) {
         
-        unordered_set<string> st(nums.begin(), nums.end());
+        int n = nums.size();
         
-        helper(nums.size(), "", st);
+        for(int i = 0; i < n; ++i)
+        {
+            if(nums[0][i] = nums[i][i] == '0' ? '1' : '0');
+        }
         
-        return ans;
-        
+        return nums[0];
     }
 };
