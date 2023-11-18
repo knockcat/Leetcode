@@ -18,11 +18,10 @@ public:
             
             long long windowSum = cnt * 1LL * nums[j];
           
-            while(windowSum - currSum > k)
+            if(windowSum - currSum > k)
             {
-                currSum -= nums[i];
                 windowSum -= nums[j];
-                ++i;
+                currSum -= nums[i++];
             }
 
             ans = max(ans, (j-i+1));
