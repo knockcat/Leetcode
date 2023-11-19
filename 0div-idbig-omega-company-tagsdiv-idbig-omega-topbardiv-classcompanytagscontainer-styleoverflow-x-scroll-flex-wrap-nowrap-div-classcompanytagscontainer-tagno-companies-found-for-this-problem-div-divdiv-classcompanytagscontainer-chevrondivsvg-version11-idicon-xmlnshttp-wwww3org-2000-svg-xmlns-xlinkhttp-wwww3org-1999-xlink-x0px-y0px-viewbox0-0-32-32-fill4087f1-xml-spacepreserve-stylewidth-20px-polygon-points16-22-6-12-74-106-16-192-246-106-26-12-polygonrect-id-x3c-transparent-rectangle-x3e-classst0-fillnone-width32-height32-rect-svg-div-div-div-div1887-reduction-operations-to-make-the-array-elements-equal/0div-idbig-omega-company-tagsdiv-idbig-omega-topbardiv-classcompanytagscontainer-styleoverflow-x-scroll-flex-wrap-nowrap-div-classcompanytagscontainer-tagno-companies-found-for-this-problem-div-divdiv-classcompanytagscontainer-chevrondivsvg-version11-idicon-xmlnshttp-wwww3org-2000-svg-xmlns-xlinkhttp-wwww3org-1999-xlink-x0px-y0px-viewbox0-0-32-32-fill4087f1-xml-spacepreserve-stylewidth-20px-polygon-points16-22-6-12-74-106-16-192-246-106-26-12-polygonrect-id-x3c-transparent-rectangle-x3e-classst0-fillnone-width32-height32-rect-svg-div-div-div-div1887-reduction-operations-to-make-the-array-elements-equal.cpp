@@ -2,29 +2,19 @@ class Solution {
 public:
     int reductionOperations(vector<int>& nums) {
         
-        int n = nums.size();
+        int n = nums.size(), ans = 0;
         
-        unordered_map<int,int> mp;
+        sort(nums.begin(), nums.end());
         
-        for(auto& itr : nums)
+        for(int i = n-1; i > 0; --i)
         {
-            ++mp[itr];
-        }
-        
-        vector<pair<int,int>> vp;
-        
-        copy(mp.begin(),mp.end(), back_inserter(vp));
-        
-        sort(vp.rbegin(),vp.rend());
-        
-        int ans = 0;
-        
-        for(int i = 0; i < vp.size()-1; ++i)
-        {
-            ans += vp[i].second;
-            vp[i+1].second += vp[i].second;
+            if(nums[i] != nums[i-1])
+            {
+                ans += (n - i);
+            }
         }
         
         return ans;
+        
     }
 };
