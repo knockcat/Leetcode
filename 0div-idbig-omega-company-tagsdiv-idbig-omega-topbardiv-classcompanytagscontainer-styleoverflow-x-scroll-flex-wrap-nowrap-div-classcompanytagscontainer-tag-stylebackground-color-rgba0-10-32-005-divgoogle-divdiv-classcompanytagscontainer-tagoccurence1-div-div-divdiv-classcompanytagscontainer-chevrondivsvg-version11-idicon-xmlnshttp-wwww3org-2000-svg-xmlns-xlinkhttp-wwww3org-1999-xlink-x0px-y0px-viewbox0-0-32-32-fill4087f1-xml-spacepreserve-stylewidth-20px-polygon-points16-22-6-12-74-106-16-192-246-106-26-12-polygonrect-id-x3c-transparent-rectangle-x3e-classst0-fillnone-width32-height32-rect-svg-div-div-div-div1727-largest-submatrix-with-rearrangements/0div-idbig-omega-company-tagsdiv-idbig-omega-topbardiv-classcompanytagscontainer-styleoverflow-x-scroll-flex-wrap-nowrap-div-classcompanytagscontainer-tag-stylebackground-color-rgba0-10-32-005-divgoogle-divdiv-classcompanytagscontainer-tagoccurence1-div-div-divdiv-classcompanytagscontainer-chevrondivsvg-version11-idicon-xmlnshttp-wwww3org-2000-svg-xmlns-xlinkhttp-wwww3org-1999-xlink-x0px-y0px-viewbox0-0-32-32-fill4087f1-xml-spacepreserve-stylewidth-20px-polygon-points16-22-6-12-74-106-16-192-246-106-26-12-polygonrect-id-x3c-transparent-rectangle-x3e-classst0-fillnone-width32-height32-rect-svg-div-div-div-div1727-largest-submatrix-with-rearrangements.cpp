@@ -5,30 +5,41 @@ public:
         int n = matrix.size();
         int m = matrix[0].size();
         
-        for(int i = 1; i < n; ++i)
-        {
-            for(int j = 0; j < m; ++j)
-            {
-                if(matrix[i][j] == 1)
-                    matrix[i][j] += matrix[i-1][j];
-                else
-                    matrix[i][j] = 0;
-            }
-        }
-        
         int ans = 0;
         
-        for(int i = 0; i < n; ++i)
+        vector<pair<int,int>> prevHeights;
+        
+        for(int row = 0; row < n; ++row)
         {
-            sort(matrix[i].begin(), matrix[i].end());
+            vector<pair<int,int>> currHeights;
+            vector<bool> visited(m, false);
             
-            for(int j = 0; j < m; ++j)
+            for(auto& [height, col] : prevHeights)
             {
-                ans = max(ans, matrix[i][j] * (m-j));
+                if(matrix[row][col] == 1)
+                {
+                    visited[col] = true;
+                    currHeights.push_back({height+1, col});
+                }
             }
+            
+            for(int col = 0; col < m; ++col)
+            {
+                if(!visited[col] and matrix[row][col] == 1)
+                    currHeights.push_back({1, col});
+            }
+            
+            
+            for(int i = 0; i < currHeights.size(); ++i)
+            {
+                int height = currHeights[i].first;
+                int base = i+1;
+                ans = max(ans, height * base);
+            }
+            
+            prevHeights = currHeights;
         }
         
         return ans;
-        
     }
 };
