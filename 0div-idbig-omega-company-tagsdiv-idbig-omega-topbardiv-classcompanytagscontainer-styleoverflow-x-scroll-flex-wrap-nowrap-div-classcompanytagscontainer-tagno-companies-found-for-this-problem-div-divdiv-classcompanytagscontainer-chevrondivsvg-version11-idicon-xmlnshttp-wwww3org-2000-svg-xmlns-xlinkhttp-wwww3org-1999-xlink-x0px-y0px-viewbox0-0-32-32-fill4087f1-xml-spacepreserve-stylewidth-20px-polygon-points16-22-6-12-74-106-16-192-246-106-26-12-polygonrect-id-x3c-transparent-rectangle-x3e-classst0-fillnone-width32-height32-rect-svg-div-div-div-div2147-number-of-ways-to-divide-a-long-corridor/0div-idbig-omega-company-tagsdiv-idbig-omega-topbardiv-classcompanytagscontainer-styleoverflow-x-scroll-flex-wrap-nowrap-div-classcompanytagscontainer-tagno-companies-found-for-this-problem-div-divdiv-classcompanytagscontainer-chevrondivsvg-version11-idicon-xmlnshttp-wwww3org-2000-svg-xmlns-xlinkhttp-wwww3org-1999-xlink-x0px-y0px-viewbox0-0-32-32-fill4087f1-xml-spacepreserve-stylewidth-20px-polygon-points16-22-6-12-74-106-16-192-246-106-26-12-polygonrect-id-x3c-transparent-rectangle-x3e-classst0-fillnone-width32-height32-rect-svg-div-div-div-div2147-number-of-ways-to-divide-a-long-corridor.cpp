@@ -1,45 +1,48 @@
-class Solution { 
+class Solution {
 public:
     
     const int mod = 1e9+7;
-    
-    int helper(int idx, int cnt, int n, string& corridor, vector<vector<int>>& dp)
-    {
-        if(cnt > 2)
-            return 0;
-        
-        if(idx == n)
-        {
-            return (cnt == 2);
-        }
-        
-        if(dp[idx][cnt] != -1)
-            return dp[idx][cnt];
-        
-        int ans = 0;
-        
-        if(corridor[idx] == 'S')
-        {
-            ans = (ans + helper(idx+1, cnt+1, n, corridor, dp)) % mod;
-            if(cnt == 2)
-                ans = (ans + helper(idx+1, 1, n, corridor, dp)) % mod;
-        }
-        else
-        {
-            ans = (ans + helper(idx+1, cnt, n, corridor, dp)) % mod;
-            if(cnt == 2)
-                ans = (ans + helper(idx+1, 0, n, corridor, dp)) % mod;
-        }
-        return dp[idx][cnt] = ans;
-    }
     
     int numberOfWays(string corridor) {
         
         int n = corridor.size();
         
-        vector<vector<int>> dp(n, vector<int>(3, -1));
+        int cnt = count(corridor.begin(), corridor.end(), 'S');
         
-        return helper(0, 0, n, corridor, dp);
-
+        if(!cnt or cnt & 1) return 0;
+        
+        int inc = 0;
+        
+        vector<int> v;
+        
+        int currCnt = 0;
+        
+        for(int i = 0; i < n; ++i)
+        {
+           if(!cnt) break;
+            
+           if(corridor[i] == 'S')
+               ++currCnt, --cnt;
+           if(currCnt == 3)
+           {
+               v.push_back(inc);
+               inc = 0;
+               currCnt = 1;
+           }
+           if(currCnt == 2)
+              (inc = !inc ? 1 : inc+1);
+        }
+        
+        if(currCnt)
+        {
+            v.push_back(inc);
+        }
+        
+        long long ans = v[0];
+    
+        for(int i = 1; i < v.size(); ++i)
+            ans = (ans *1LL* v[i]) % mod;
+        
+        return ans;
     }
 };
