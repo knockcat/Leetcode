@@ -4,9 +4,6 @@ public:
         
         int n = num.size();
         
-        unordered_map<char, int> mp;
-        
-        int maxi = 0;
         string ans;
         
         int i = 0, j = 0, k = 3;
@@ -15,24 +12,14 @@ public:
         
         while(j < n)
         {
-            ++mp[num[j]];
-            
             curr += num[j];
             
             if(curr.size() == 3)
             {
-                int number = stoi(curr);
-                if(number >= maxi and mp.size() == 1)
+                if(j>=2 and num[j] == num[j-1] and num[j-1] == num[j-2])
                 {
-                    maxi = number;
-                    ans = curr;
+                    ans = max(ans, curr);
                 }
-                
-                --mp[num[i]];
-                if(mp[num[i]] == 0)
-                    mp.erase(num[i]);
-                ++i;
-                
                 curr.erase(curr.begin());
             }
             
