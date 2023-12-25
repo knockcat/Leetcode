@@ -1,14 +1,12 @@
 class Solution {
 public:
     
-    int helper(int idx, int n, string& str, vector<int>& dp)
-    {   
+    int helper(int idx, int n, string& s, vector<int>& dp)
+    {
         if(idx == n)
-        {
             return 1;
-        }
         
-        if(str[idx] == '0')
+        if(s[idx] == '0')
             return 0;
         
         if(dp[idx] != -1)
@@ -18,22 +16,18 @@ public:
         
         if(idx + 2 <= n)
         {
-            string curr = str.substr(idx, 2);
+            string curr = s.substr(idx, 2);
             
-            int num = stoi(curr);
-            
-            if(num >= 1 and num <= 26)
+            if(stoi(curr) >= 1 and stoi(curr) <= 26)
             {
-                first = helper(idx+2, n, str, dp);
+                first = helper(idx + 2, n, s, dp);
             }
         }
         
-        int num = str[idx] - '0';
+        int ch = s[idx] - '0';
         
-        if(num >= 1 and num <= 26)
-        {
-            second = helper(idx+1, n, str, dp);
-        }
+        if(ch >= 1 and ch <= 26)
+            second = helper(idx + 1,n, s, dp);
         
         return dp[idx] = first + second;
     }
