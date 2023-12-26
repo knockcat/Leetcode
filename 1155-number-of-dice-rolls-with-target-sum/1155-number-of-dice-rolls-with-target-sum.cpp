@@ -1,32 +1,26 @@
 class Solution {
 public:
-    
-    const int mod = 1e9+7;
-    
-    int helper(int idx, int n, int k, int target, vector<vector<int>>& dp)
-    {
-        if(idx == n)
-            return (target == 0);
+    int numRollsToTarget(int n, int k, int target) {
+     
+        const int mod = 1e9+7;
         
-        if(dp[idx][target] != -1)
-            return dp[idx][target];
+        vector<vector<int>> dp(n+1, vector<int>(target+1, 0));
         
-        int ways = 0;
+        dp[0][0] = 1;
         
-        for(int i = 1; i <= k; ++i)
+        for(int i = 1; i <= n; ++i)
         {
-            if(i <= target)
-                ways = (ways + helper(idx+1, n, k, target - i, dp))%mod;
-            
+            for(int j = 1; j <= target; ++j)
+            {
+                for(int f = 1; f <= k; ++f)
+                {
+                    if(j - f >= 0)
+                        dp[i][j] = (dp[i][j] + dp[i-1][j-f]) % mod;
+                }
+            }
         }
         
-        return dp[idx][target] = ways;
-    }
-    
-    int numRollsToTarget(int n, int k, int target) {
+        return dp[n][target];
         
-        vector<vector<int>> dp(n+1, vector<int>(target+1, -1));
-     
-        return helper(0, n, k, target, dp);
     }
 };
