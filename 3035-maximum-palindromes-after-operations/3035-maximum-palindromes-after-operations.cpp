@@ -1,62 +1,31 @@
 class Solution {
 public:
-    
     int maxPalindromesAfterOperations(vector<string>& words) {
         
-        int n = words.size();
-        
-        map<int,int> mp;
+        vector<int> length;
+        map<char, int> mp;
         
         for(auto& word : words)
         {
             for(auto& ch : word)
                 ++mp[ch];
+            length.push_back((int)word.size()/2);
         }
         
-        long long ev = 0, odd = 0;
+        int matching = 0, cnt = 0;
         
-        for(auto& [f,e] : mp)
+        for(auto&[f, e] : mp)
+            matching += e/2;
+        
+        sort(length.begin(), length.end());
+        
+        for(int i = 0; i < length.size(); ++i)
         {
-            if(e & 1)
+            if(matching >= length[i])
             {
-                ev += (e-1);
-                ++odd;
-            }
-            else
-                ev += e;
-        }
-        
-        int cnt = 0;
-        
-        sort(words.begin(), words.end(), [&](const auto& a, const auto& b){
-            return a.size() < b.size();
-        });
-        
-        for(int i = 0; i < words.size(); ++i)
-        {
-            int sz = words[i].size();
-            
-            if(sz & 1)
-            {
-               if(odd > 0)
-               {
-                   --odd;
-               }
-               else if(ev >= 2)
-               {
-                   ++odd;
-                   ev -= 2;
-               }
-               --sz;
-            }
-           
-            if(ev >= sz)
-            {
-                ev -= sz;
+                matching -= length[i];
                 ++cnt;
             }
-            
-            
         }
         
         return cnt;
