@@ -2,24 +2,23 @@ class Solution {
 public:
     vector<int> rearrangeArray(vector<int>& nums) {
         
-        vector<int> pos, neg;
+        int n = nums.size();
+        vector<int> ans(n);
         
-        for(auto& ele : nums)
+        int even = 0, odd = 1;
+        
+        for(int i = 0; i < n; ++i)
         {
-            if(ele < 0)
-                neg.push_back(ele);
+            if(nums[i] < 0)
+            {
+                ans[odd] = nums[i];
+                odd += 2;
+            }
             else
-                pos.push_back(ele);
-        }
-        
-        vector<int> ans(nums.size());
-        
-        int k = 0, i = 0, j = 0;
-        
-        while(i < pos.size() and j < pos.size())
-        {
-            ans[k++] = pos[i++];
-            ans[k++] = neg[j++];
+            {
+                ans[even] = nums[i];
+                even += 2;
+            }
         }
         
         return ans;
