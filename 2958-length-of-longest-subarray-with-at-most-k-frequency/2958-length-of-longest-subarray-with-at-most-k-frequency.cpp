@@ -4,14 +4,13 @@ public:
         
         int i = 0, j = 0, n = nums.size();
         
-        int maxFreq = 0, ans = 0;
+        int ans = 0;
         
         map<int,int> mp;
         
         while(j < n)
         {
             ++mp[nums[j]];
-            maxFreq = max(maxFreq, mp[nums[j]]);
             
             while(mp[nums[j]] > k)
             {
