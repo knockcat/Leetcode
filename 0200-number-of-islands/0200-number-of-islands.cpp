@@ -1,52 +1,99 @@
-class Solution {
-public:
-    
-    vector<int> dy = {-1, +1, 0, 0};
-    vector<int> dx = {0, 0, -1, +1};
-    
-    bool isValid(int i, int j, int n, int m)
-    {
-        return (i >= 0 and j >= 0 and i < n and j < m);
-    }
-    
-    void dfs(int i, int j, int n, int m, vector<vector<char>>& grid, vector<vector<bool>>& visited)
-    {
-        visited[i][j] = true;
-        
-        for(int k = 0; k < 4; ++k)
+class DSU{
+    public:
+        int N;
+        vector<int> parent, size;
+
+        DSU(int n)
         {
-            int newx = dx[k] + i;
-            int newy = dy[k] + j;
+            N = n;
+            parent.resize(N);
+            size.resize(N, 1);
+            for(int i = 0; i < N; ++i)
+                parent[i] = i;
+        }
+    
+        int findParent(int u)
+        {
+            if(u == parent[u])
+                return u;
+            return parent[u] = findParent(parent[u]);
+        }
+    
+        void unionBySize(int u, int v)
+        {
+            int parU = findParent(u);
+            int parV = findParent(v);
             
-            if(isValid(newx, newy, n, m) and !visited[newx][newy] and grid[newx][newy] == '1')
+            if(parU == parV)
+                return;
+            
+            if(size[parU] < size[parV])
             {
-                dfs(newx, newy, n, m, grid, visited);   
+                parent[parU] = parV;
+                size[parV] += size[parU];
+            }
+            else
+            {
+                parent[parV] = parU;
+                size[parU] += size[parV];
             }
         }
-    }
     
+        bool isSame(int u, int v)
+        {
+            return findParent(u) == findParent(v);
+        }
+};
+
+class Solution {
+public:
     int numIslands(vector<vector<char>>& grid) {
         
-        int n = grid.size();
-        int m = grid[0].size();
+        int n = grid.size(), m = grid[0].size();
+
+        vector<int> dx = {-1, 0, 0, +1};
+        vector<int> dy = {0, -1, +1 ,0};
         
-        int numberOfIslands = 0;
+        DSU dsu(n*m + 1);
         
-        vector<vector<bool>> visited(n, vector<bool>(m, false));
+        set<int> ls;
+        
+        int island = 0;
         
         for(int i = 0; i < n; ++i)
         {
             for(int j = 0; j < m; ++j)
             {
-                if(grid[i][j] == '1' and !visited[i][j])
+                if(grid[i][j] == '1')
                 {
-                    ++numberOfIslands;
-                    dfs(i, j, n, m, grid, visited);
+                    ls.insert((i*m) + j);
+                    for(int k = 0; k < 4; ++k)
+                    {
+                        int cx = dx[k] + i;
+                        int cy = dy[k] + j;
+
+                        if(cx >= 0 and cy >= 0 and cx < n and cy < m and grid[cx][cy] == '1')
+                        {
+                            int node = (i * m) + j;
+                            int adjNode = (cx * m) + cy;
+
+                            if(!dsu.isSame(node, adjNode))
+                            {
+                                dsu.unionBySize(node, adjNode);
+                            }
+                        }
+                    }
                 }
             }
         }
         
-        return numberOfIslands;
+        for(auto& node : ls)
+        {
+            if(dsu.findParent(node) == node)
+                ++island;
+        }
+        
+        return island;
         
     }
 };
