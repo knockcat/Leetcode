@@ -2,23 +2,17 @@ class Solution {
 public:
     bool isPalindrome(int x) {
         
-        if(x < 0)
+        if(x < 0 or (x % 10 == 0 and x != 0))
             return false;
         
-        int curr = 0, num = x;
+        int rev = 0;
         
-        while(num > 0)
+        while(rev < x)
         {
-            int rem = num % 10;
-            num /= 10;
-            
-            if(curr > INT_MAX/10 or curr == INT_MAX/10 and rem > INT_MAX%10)
-                return false;
-            
-            curr = (curr * 10) + rem;
+            rev = (rev * 10) + (x%10);
+            x /= 10;
         }
-     
-        return curr == x;
         
+        return (rev == x or rev/10 == x);
     }
 };
