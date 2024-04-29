@@ -17,7 +17,7 @@ public:
             
             curr = (curr * 10) + rem;
         }
-        cout<<curr<<endl;
+     
         return curr == x;
         
     }
