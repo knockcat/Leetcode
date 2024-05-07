@@ -11,51 +11,26 @@
 class Solution {
 public:
     
-    ListNode* reverse(ListNode* head)
+    int add(ListNode* head)
     {
-        ListNode* prev = nullptr;
+        if(!head)
+            return 0;
         
-        while(head)
-        {
-            ListNode* nex = head->next;
-            head->next = prev;
-            prev = head;
-            head = nex;
-        }
-        return prev;
-    }
-    
-    ListNode* add(ListNode* head)
-    {
-        ListNode* temp = head, *prev = nullptr;
+        int sum = (head->val * 2) + add(head->next);
         
-        int carry = 0;
+        head->val = sum % 10;
         
-        while(temp)
-        {
-            prev = temp;
-            int sum = 0;
-            sum += (2 * temp->val) + carry;
-            temp->val = (sum%10);
-            carry = sum / 10;
-            temp = temp->next;
-        }
-        
-        if(carry)
-        {
-            prev->next = new ListNode (carry);
-        }
-        
-        return head;
+        return sum / 10;
     }
     
     ListNode* doubleIt(ListNode* head) {
         
-       head = reverse(head);
+        int carry = add(head);
         
-       head = add(head);
+        if(carry)
+            head = new ListNode(carry, head);
         
-       return reverse(head);
+        return head;
         
     }
 };
