@@ -4,32 +4,23 @@ public:
         
         int n = s.size();
         
-        map<int, int> mp;
-        
-        for(int i = 0; i < n; ++i)
-        {
-            mp[i] = abs(s[i] - t[i]);
-        }
-        
-        int currCost = 0, len = 0;
-        
-        int i = 0, j = 0;
+        int i = 0, j = 0, ans = 0;
         
         while(j < n)
         {
-            currCost += mp[j];
+            maxCost -= abs(s[j] - t[j]);
             
-            while(currCost > maxCost)
+            if(maxCost < 0)
             {
-                currCost -= mp[i];
+                maxCost += abs(s[i] - t[i]);
                 ++i;
             }
             
-            len = max(len, j - i + 1);
+            ans = max(ans, j - i + 1);
+            
             ++j;
         }
         
-        return len;
-        
+        return ans;
     }
 };
