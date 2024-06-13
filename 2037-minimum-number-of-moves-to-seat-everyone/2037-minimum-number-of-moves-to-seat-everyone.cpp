@@ -7,25 +7,11 @@ public:
         sort(seats.begin(), seats.end());
         sort(students.begin(), students.end());
         
-        int st = 0, end = n-1;
-        
         int moves = 0;
         
-        while(st <= end)
+        for(int i = 0; i < n; ++i)
         {
-            int f = abs(seats[st] - students[st]);
-            int s = abs(seats[end] - students[end]);
-            
-            if(f < s)
-            {
-                moves += f;
-                ++st;
-            }
-            else
-            {
-                moves += s;
-                --end;
-            }
+            moves += abs(seats[i] - students[i]);
         }
         
         return moves;
