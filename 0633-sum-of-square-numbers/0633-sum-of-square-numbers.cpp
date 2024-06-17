@@ -1,40 +1,22 @@
-using ll = long long;
-
 class Solution {
 public:
-    
-    bool isPerfectSquare(int num)
-    {
-        if(num == 0 or num == 1)
-            return true;
-        
-        ll low = 0, high = num;
-        
-        while(low <= high)
-        {
-            ll mid = (low + high) / 2;
-            
-            if(mid * mid == num)
-                return true;
-            else if(mid * mid < num)
-                low = mid+1;
-            else
-                high = mid-1;
-                
-        }
-        return false;
-    }
-    
     bool judgeSquareSum(int c) {
         
-        for(ll i = 0; i * i <= c; ++i)
+        for(int i = 2; i * i <= c; ++i)
         {
-            int a = i * i;
-            if(isPerfectSquare(c - a))
-                return true;
+            int cnt = 0;
+            
+            while(c % i == 0)
+            {
+                ++cnt;
+                c /= i;
+            }
+            
+            if(i % 4 == 3 and cnt % 2 != 0)
+                return false;
         }
         
-        return false;
+        return c%4 != 3;
         
     }
 };
