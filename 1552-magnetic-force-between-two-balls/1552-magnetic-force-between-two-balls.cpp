@@ -21,10 +21,11 @@ public:
     int maxDistance(vector<int>& position, int m) {
         
         int n = position.size();
-        int low = 0, high = *max_element(position.begin(), position.end());
-        int ans = 0;
         
         sort(position.begin(), position.end());
+        
+        int low = 1, high = position.back() - position[0];
+        int ans = 0;
         
         while(low <= high)
         {
