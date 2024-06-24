@@ -8,7 +8,7 @@ public:
         
         bool flag = true;
         
-        for(int i = 0; i <= n-k; ++i)
+        for(int i = 0; i < n; ++i)
         {
            pref[i].second = (i-1 >= 0 ? pref[i-1].second : 0);
             
@@ -23,23 +23,16 @@ public:
            int op = (nums[i] % 2 == 0 ? (moves % 2 == 0 ? 1 : 0) : (moves % 2 == 0 ? 0 : 1));
             
            if(op){
-               pref[i].first = 1;
-               ++ans;
+               if(i <= n-k)
+               {
+                pref[i].first = 1;
+                ++ans;
+               }
+               else
+                   flag = false;
            }
-            
+           
            pref[i].second += op;
-        }
-        
-        for(int i = n-k+1; i < n; ++i)
-        {
-            int moves = (i-1 >= 0 ? pref[i-1].second : 0);
-            
-            if(i - k >= 0 and pref[i-k].first)
-                --moves;
-            
-            flag &= (nums[i] & 1 and moves % 2 == 0 or nums[i] % 2 == 0 and moves & 1);
-            
-            pref[i].second = moves;
         }
         
         return (flag ? ans : -1);
