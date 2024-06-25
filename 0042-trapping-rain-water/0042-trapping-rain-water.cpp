@@ -1,29 +1,27 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        
+     
         int n = height.size();
         
-        vector<int> leftMax(n, 0), rightMax(n, 0);
+        int i = 0, j = n-1, ans = 0;
         
-        int ans = 0;
+        int leftMax = 0, rightMax = 0;
         
-        for(int i = 0; i < n; ++i)
+        while(i < j)
         {
-            leftMax[i] = (i == 0 ? height[i] : max(height[i], leftMax[i-1]));
-        }
-
-        for(int i = n-1; i >= 0; --i)
-        {
-            rightMax[i] = (i == n-1 ? height[i] : max(height[i], rightMax[i+1]));
-        }
-        
-        for(int i = 0; i < n; ++i)
-        {
-            int canHold = min(leftMax[i], rightMax[i]);
-            ans += (canHold - height[i] > 0 ? canHold - height[i] : 0);
+            leftMax = max(leftMax, height[i]);
+            rightMax = max(rightMax, height[j]);
+            
+            ans += min(leftMax, rightMax) - min(height[i], height[j]);
+            
+            if(height[i] <= height[j])
+                ++i;
+            else
+                --j;
         }
         
         return ans;
+        
     }
 };
