@@ -33,7 +33,6 @@ public:
                     
                     if(newx >= 0 and newy >= 0 and newx < n and newy < m)
                     {
-                        // cout<<newx<<' '<<newy<<"' - '";
                         if(st.count({newx, newy}))
                             ++alive;
                         else
@@ -47,11 +46,9 @@ public:
                 }
                 else
                 {
-                    // cout<<alive<<endl;
                     if(alive == 3)
                         board[i][j] = 1;
                 }
-                // cout<<endl;
             }
         }
     }
