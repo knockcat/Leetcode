@@ -13,7 +13,6 @@ public:
             if(mp[str] == 1)
             {
                 vec.push_back(str);
-                ++mp[str];
             }
         }
         
