@@ -28,8 +28,8 @@ public:
             for(auto& chlNode : root->children)
             {
                 postorder(chlNode, ans);
-                ans.push_back(chlNode->val);
             }
+            ans.push_back(root->val);
         }
     }
     
@@ -38,9 +38,7 @@ public:
         vector<int> ans;
         
         postorder(root, ans);
-        if(root)
-            ans.push_back(root->val);
-        
+
         return ans;
         
     }
